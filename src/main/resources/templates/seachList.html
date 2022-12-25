@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>选手成绩查询</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="renderer" content="webkit">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+    <style type="text/css">
+    html,body{height:100%;}
+    body,*{margin:0;padding:0;text-decoration:none; border:0;list-style-type: none;}
+    body{ margin:0px;font-family: "微软雅黑","宋体",Arial;background-color:#ffffff;line-height:1.8;font-size:14px;}
+    input[type="submit"],input[type="reset"],input[type="button"],button { -webkit-appearance: none; }
+    .wrappers{width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
+    @media screen and (min-width: 1200px) {
+        .wrappers{max-width:640px; }
+    }
+    .wrapper1{width:100%;margin:0px auto; text-align:center; position: relative;}
+    .wrapper2{width:100%;margin:0px auto; text-align:center; position: relative; overflow:hidden;}
+    .wrapper2 img{ float:left;}
+    .wrapper3{width:100%;margin:0px auto; text-align:left; position: relative; }
+    /*img{ max-width:100%; height:auto; max-width:100% !important; height:auto !important;}*/
+    .znfuqi{width:100%; margin:0px auto; text-align:center; position:absolute; z-index:99;}
+    .znfanhuisy{ display:none !important;}
+</style>
+<body class="bgimg">
+<!--html代码 -->
+<div id="app">
+    <div class="wrappers">
+    </div>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<!--<script src="/echarts.js"></script>-->
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+            };
+        },
+        //初始化
+        mounted: function () {
+        },
+        //被调用方法
+        methods: {
+        }
+    })
+</script>
+</html>

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 注册相关业务
+ * user 注册相关业务类
  */
 @Controller
 @RequestMapping("/reg")
