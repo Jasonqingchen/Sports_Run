@@ -26,12 +26,21 @@ public class CpController {
         public SportCpMapper scpMapper;
 
     /**
-     * 跳转到cp点维护界面
+     * 主界面（导航页）
      */
     @RequestMapping("/tz")
     public String cpTz() {
+        return "urlPage";
+    }
+
+    /**
+     * 跳转到cp点维护界面
+     */
+    @RequestMapping("/tzset")
+    public String cpTzSet() {
         return "cpSet";
     }
+
     /**
      * 添加cp点内容
      */
