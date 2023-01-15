@@ -60,4 +60,14 @@ public class CpController {
         return "1";
     }
 
+    /**
+     * 生成二维码列表 列表查询
+     * @return
+     */
+    @RequestMapping("/cpselect")
+    @ResponseBody
+    public List<SportCp> cpSelect () {
+            return  scpMapper.selectList(null);
+    }
+
 }

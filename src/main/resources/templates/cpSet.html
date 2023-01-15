@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>cp点设置助手</title>
+    <title>设置助手</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -34,94 +34,161 @@
                     color: red;
                   }
                 }
+                .d{
+                background:url("/imgs/d.jpg")
+                }
 </style>
-<body class="bgimg">
+<body class="bgimg" style="text-align:center;">
 <!--html代码 -->
 <div id="app">
     <div class="wrappers">
-        <el-row>
-            <el-col :span="24"><div style="background-color: #EB8E55;"></div></el-col>
-        </el-row><br>
-        <el-card class="box-card">
-            <div style="text-align:center;">
-                <el-form :inline="true"
-                        class="demo-form-inline"
-                        ref="orRuleForm"
-                        :model="orRuleForm">
-                    <!--固定字段-->
-                    <el-form-item
-                            label="比赛开始时间">
-                        <el-date-picker
-                                v-model="orRuleForm.starttime"
-                                type="datetime"
-                                placeholder="选择比赛开始日期时间"
-                                value-format="yyyy-MM-dd HH:mm:ss">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item
-                            label="比赛结束时间">
-                        <el-date-picker
-                                v-model="orRuleForm.endtime"
-                                type="datetime"
-                                placeholder="选择比赛结束日期时间"
-                                value-format="yyyy-MM-dd HH:mm:ss">
-                        </el-date-picker>
-                    </el-form-item>
-                    <!--循环加载点字段-->
-                    <div v-for="(every, index) in orRuleForm.orFormList" :key="index">
-                        <el-row>
-                            <el-col :span="16"><div class="grid-content bg-purple" style="text-align: right;">
-                                <el-form-item
-                                        label="补给点名称"
-                                        :prop="'orFormList.' + index + '.cpname'">
-                                    <el-input v-model="every.cpname"></el-input>
-                                </el-form-item>
-                                <el-form-item
-                                        class="compareClass"
-                                        label="关门时间"
-                                        :prop="'orFormList.' + index + '.cpendtime'">
-                                    <el-date-picker
-                                            v-model="every.cpendtime"
-                                            type="datetime"
-                                            placeholder="该CP点关门时间"
-                                            value-format="yyyy-MM-dd HH:mm:ss">
-                                    </el-date-picker>
-                                </el-form-item>
-                            </div></el-col>
-                            <el-col :span="8"><div class="grid-content bg-purple-light" style="text-align: left;">
-                                <!--增加行减少行按钮-->
-                                <div class="addDelete">
-                                    <i v-if="index == orRuleForm.orFormList.length - 1"
-                                       @click="addOrHanlder"
-                                       class="el-icon-circle-plus-outline"
-                                    ></i>
-                                    <i v-if="index !== orRuleForm.orFormList.length - 1"
-                                       @click="deleteOrHandler(every, index)"
-                                       class="el-icon-remove-outline"
-                                    ></i>
-                                </div>
-                            </div></el-col>
-                        </el-row>
-                    </div>
-                </el-form>
-                <span slot="footer" class="dialog-footer">
+        <div style="text-align: center;">
+            <img src="/imgs/aebss.jpeg" style="width: 80%; height: 300px;">
+        </div>
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">
+        </div><br>
+        <span id="ename"></span><br><br><br><br>
+        <el-card class="box-card" >
+
+            <el-tabs type="border-card" @tab-click="handleClick">
+                <el-tab-pane>
+                    <span slot="label"><i class="el-icon-location"></i> CP点位设定</span>
+                    <template>
+                        <ul class="list" style="overflow:auto" infinite-scroll-disabled="disabled">
+                            <div style="text-align:center;">
+                                <el-form :inline="true"
+                                         class="demo-form-inline"
+                                         ref="orRuleForm"
+                                         :model="orRuleForm">
+                                    <!--固定字段-->
+                                    <el-form-item
+                                            label="比赛开始时间">
+                                        <el-date-picker
+                                                v-model="orRuleForm.starttime"
+                                                type="datetime"
+                                                placeholder="选择比赛开始日期时间"
+                                                value-format="yyyy-MM-dd HH:mm:ss">
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item
+                                            label="比赛结束时间">
+                                        <el-date-picker
+                                                v-model="orRuleForm.endtime"
+                                                type="datetime"
+                                                placeholder="选择比赛结束日期时间"
+                                                value-format="yyyy-MM-dd HH:mm:ss">
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <!--循环加载点字段-->
+                                    <div v-for="(every, index) in orRuleForm.orFormList" :key="index">
+                                        <el-row>
+                                            <el-col :span="16"><div class="grid-content bg-purple" style="text-align: right;">
+                                                <el-form-item
+                                                        label="补给点名称"
+                                                        :prop="'orFormList.' + index + '.cpname'">
+                                                    <el-input v-model="every.cpname"></el-input>
+                                                </el-form-item>
+                                                <el-form-item
+                                                        class="compareClass"
+                                                        label="关门时间"
+                                                        :prop="'orFormList.' + index + '.cpendtime'">
+                                                    <el-date-picker
+                                                            v-model="every.cpendtime"
+                                                            type="datetime"
+                                                            placeholder="该CP点关门时间"
+                                                            value-format="yyyy-MM-dd HH:mm:ss">
+                                                    </el-date-picker>
+                                                </el-form-item>
+                                            </div></el-col>
+                                            <el-col :span="8"><div class="grid-content bg-purple-light" style="text-align: left;">
+                                                <!--增加行减少行按钮-->
+                                                <div class="addDelete">
+                                                    <i v-if="index == orRuleForm.orFormList.length - 1"
+                                                       @click="addOrHanlder"
+                                                       class="el-icon-circle-plus-outline"
+                                                    ></i>
+                                                    <i v-if="index !== orRuleForm.orFormList.length - 1"
+                                                       @click="deleteOrHandler(every, index)"
+                                                       class="el-icon-remove-outline"
+                                                    ></i>
+                                                </div>
+                                            </div></el-col>
+                                        </el-row>
+                                    </div>
+                                </el-form>
+                                <span slot="footer" class="dialog-footer">
                      <el-button type="primary" @click="orSaveHandler">保 存</el-button>
                     <el-button  @click="fh">返 回</el-button>
                  </span>
-            </div>
+                            </div>
+                        </ul>
+                    </template>
+                </el-tab-pane>
+                <el-tab-pane label="CP点位二维码生成">
+                    <span slot="label"><i class="el-icon-printer"></i> CP点位二维码生成</span>
+                    <template>
+                        <el-table
+                                :data="tableData"
+                                style="width: 100%"
+                                max-height="250">
+                            <el-table-column
+                                    fixed
+                                    prop="starttime"
+                                    label="比赛日期"
+                                    width="200">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cpname"
+                                    label="CP点名称"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cpendtime"
+                                    label="关门时间"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="bz"
+                                    label="备注"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="120">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            @click.native.prevent="clickRow(scope.$index, tableData)"
+                                            type="text"
+                                            size="small">
+                                        点击生成二维码
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-tab-pane>
+                <!--<el-tab-pane label="角色管理">角色管理</el-tab-pane>
+                <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>-->
+            </el-tabs>
         </el-card>
     </div>
 </div>
 </body>
 <script src="/vue/jquery.min.js"></script>
 <script src="/vue/vue.min.js"></script>
-<script src="/vue/element-ui.min.js"></script>
+<script src="/js/qrcode.js"></script>
+<!--<script src="/vue/element-ui.min.js"></script>-->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <!--<script src="/echarts.js"></script>-->
 <script type="text/javascript">
     new Vue({
         el: '#app',
         data() {
             return {
+            dialogVisible: false,
+            tableData:[],//data table
              //定义表单项
  orRuleForm: {
         starttime: "",
@@ -137,10 +204,18 @@
         },
         //初始化
         mounted: function () {
+
         },
         //被调用方法
         methods: {
-
+handleClose(done) {
+        //关闭二维码的弹窗
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
             //表单新增行
     addOrHanlder() {
       let obj = {
@@ -156,6 +231,55 @@
     fh () {
     location.href="/cp/tz";
     },
+    //标题栏点击事件
+    handleClick(tab, event) {
+    //初始化查询
+    var newthis = this;
+            //请求后台
+            var url = '/cp/cpselect';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.tableData=result
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        console.log(tab, event);
+      },
+    //点击生成二维码
+     clickRow(index, rows) {
+     debugger
+<!--    new QRCode(document.getElementById("locatorQRCodeRef"), "www.baidu.com");-->
+            document.getElementById("locatorQRCodeRef").style.display="";
+            document.getElementById("locatorQRCodeRef").innerHTML = "";
+            document.getElementById('ename').innerHTML = rows[0].cpname;
+            var newthis = this;
+           var loading = newthis.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            //打开对话框
+			var qrcode = new QRCode(document.getElementById("locatorQRCodeRef"), {
+				text: "生成二维码的方法不止一种",
+				width: 200,
+				height: 200,
+				colorDark : "#f60",
+				colorLight : "#ccc",
+				correctLevel : 0 //二维码结构复杂性 0~3
+			});
+          loading.close();
+    <!--let qrcodeCanvas = ((this.$refs.locatorQRCodeRef || {})?.getElementsByTagName?.('canvas') || [])?.[0];-->
+    <!--//this.qrcodeImgUrl = qrcodeCanvas?.toDataURL?.('image/png'); 作为下载图片资源-->
+    <!--   rows.splice(index, 1);-->
+      },
     //保存
     orSaveHandler(){
     var from = this.orRuleForm;
@@ -190,7 +314,7 @@
             });
             console.log('submit!');
             }
-    }
+    },
         //------------------------------底部
     })
 </script>
