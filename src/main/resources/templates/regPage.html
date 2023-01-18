@@ -63,6 +63,13 @@
                         <el-radio label="女"></el-radio>
                     </el-radio-group>
                 </el-form-item>
+                <el-form-item label="组别">
+                    <el-radio-group v-model="form.groupzb">
+                        <el-radio label="短距离"></el-radio>
+                        <el-radio label="中等距离"></el-radio>
+                        <el-radio label="长距离"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item label="备注">
                     <el-input type="textarea" v-model="form.bz"></el-input>
                 </el-form-item>
@@ -97,6 +104,7 @@
               form: {
                   name: '',
                   bz: '',
+                  groupzb: '',
                   sex: '',
                   phone:''
                 },
@@ -126,6 +134,9 @@
             } else if (addForm.phone == '') {
             newthis.$message.error('手机号不能为空');
             return
+            }else if (addForm.groupzb == '') {
+            newthis.$message.error('组别不能为空');
+            return
             }
             if(!regExpPhone.test(addForm.phone)) {
             newthis.$message.error('请填写正确对手机号');
@@ -135,6 +146,7 @@
                 'sex': addForm.sex,
                 'bz': addForm.bz,
                 'name': addForm.name,
+                'groupzb': addForm.groupzb,
                 'phone': addForm.phone,
             };
             var url = '/reg/reg';

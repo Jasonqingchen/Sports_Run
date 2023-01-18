@@ -59,7 +59,7 @@
                     <el-input v-model="form.phone" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="" @click="onSubmit" round>打卡</el-button>
+                    <el-button type="success" style="width: 100px; height: 100px;" @click="onSubmit" size="medium" circle>点击打卡</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -69,7 +69,6 @@
 <script src="/vue/jquery.min.js"></script>
 <script src="/vue/vue.min.js"></script>
 <script src="/vue/element-ui.min.js"></script>
-<!--<script src="/echarts.js"></script>-->
 <script type="text/javascript">
     new Vue({
         el: '#app',
@@ -125,17 +124,19 @@
                 type: 'POST',
                 url: url,
                 data: d,
-                dataType: 'json',
+                dataType: 'text',
                 success: function (result) {
                     if (result == 1) {
                         newthis.$message({
                             message: '打卡成功',
                             type: 'success'
                         });
+                    } else if (result == 2){
+                        newthis.$message.error('此手机号非选手注册手机号');
                     } else {
-                        newthis.$message.error('选手已打卡,不可重复打卡');
-                    }
                     //存在不是选手的用户
+                        newthis.$message.error("选手"+result+'已打卡,  不可重复打卡');
+                    }
                 },
                 error: function () {
                     console.log('error submit!!');
@@ -147,4 +148,5 @@
         }
     })
 </script>
+<!--<script src="/echarts.js"></script>-->
 </html>

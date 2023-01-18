@@ -18,5 +18,7 @@ public class SportUser implements Serializable {
 
     private String id;
 
+    private String groupzb;
+
     private static final long serialVersionUID = 1L;
 }
