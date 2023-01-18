@@ -178,6 +178,7 @@
 </body>
 <script src="/vue/jquery.min.js"></script>
 <script src="/vue/vue.min.js"></script>
+<script type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
 <script src="/js/qrcode.js"></script>
 <!--<script src="/vue/element-ui.min.js"></script>-->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -255,7 +256,6 @@ handleClose(done) {
     //点击生成二维码
      clickRow(index, rows) {
      debugger
-<!--    new QRCode(document.getElementById("locatorQRCodeRef"), "www.baidu.com");-->
             document.getElementById("locatorQRCodeRef").style.display="";
             document.getElementById("locatorQRCodeRef").innerHTML = "";
             document.getElementById('ename').innerHTML = rows[0].cpname;
@@ -266,14 +266,16 @@ handleClose(done) {
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            //打开对话框
-			var qrcode = new QRCode(document.getElementById("locatorQRCodeRef"), {
-				text: "生成二维码的方法不止一种",
+            var urls = "http://127.0.0.1:8666/gps/tz?id="+rows[0].id;
+            console.log(urls);
+			var qrcode = new QRCode(document.getElementById("locatorQRCodeRef"),{
+				text: urls,
 				width: 200,
 				height: 200,
+				render: 'table',
 				colorDark : "#f60",
 				colorLight : "#ccc",
-				correctLevel : 0 //二维码结构复杂性 0~3
+				correctLevel : 1 //二维码结构复杂性 0~3
 			});
           loading.close();
     <!--let qrcodeCanvas = ((this.$refs.locatorQRCodeRef || {})?.getElementsByTagName?.('canvas') || [])?.[0];-->

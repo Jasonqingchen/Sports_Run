@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head xmlns:th="http://www.w3.org/1999/xhtml">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>信息注册</title>
+    <title>选手打卡页面</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -50,25 +50,16 @@
 
         </el-row><br>
         <div>
-            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px">
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="120px">
+                <el-form-item label="CPID" prop="cpid" style="display: none;">
+                    <el-input v-model="form.cpid" autocomplete="off" id="cpid" style="display: none;" oninput="if(value.length>100)value=value.slice(0,100)"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="phone">
+                <br><br><br><br><br>
+                <el-form-item label="选手本人手机号" prop="phone">
                     <el-input v-model="form.phone" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
-                    <el-radio-group v-model="form.sex">
-                        <el-radio label="男"></el-radio>
-                        <el-radio label="女"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="备注">
-                    <el-input type="textarea" v-model="form.bz"></el-input>
-                </el-form-item>
                 <el-form-item>
-                    <el-button type="" @click="onSubmit" round>立即注册</el-button>
-                    <el-button round>取消注册</el-button>
+                    <el-button type="" @click="onSubmit" round>打卡</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -95,9 +86,7 @@
       };
             return {
               form: {
-                  name: '',
-                  bz: '',
-                  sex: '',
+                  cpid: '',
                   phone:''
                 },
                 rules: {
@@ -109,35 +98,29 @@
         },
         //初始化
         mounted: function () {
+        var totalMoney = '[[${id}]]';
+        this.form.cpid = totalMoney;
         },
         methods: {
-        //提交from 进行注册
+        // 打卡
         onSubmit() {
         //拿到fromi表单数据 想后台进行提交 ajax
           var addForm = this.form;
           var regExpPhone = new RegExp("^1[3578]\\d{9}$");
             var newthis = this;
-            if (addForm.sex == '' ) {
-            newthis.$message.error('性别不能为空');
-            return
-            } else if (addForm.name == '') {
-            newthis.$message.error('姓名不能为空');
-            return
-            } else if (addForm.phone == '') {
+            if (addForm.phone == '') {
             newthis.$message.error('手机号不能为空');
             return
             }
             if(!regExpPhone.test(addForm.phone)) {
-            newthis.$message.error('请填写正确对手机号');
+            newthis.$message.error('请填写正确对手机号格式');
             return
             }
             var d = {
-                'sex': addForm.sex,
-                'bz': addForm.bz,
-                'name': addForm.name,
+                'cpid': addForm.cpid,
                 'phone': addForm.phone,
             };
-            var url = '/reg/reg';
+            var url = '/gps/save';
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -146,12 +129,13 @@
                 success: function (result) {
                     if (result == 1) {
                         newthis.$message({
-                            message: '恭喜你,注册成功',
+                            message: '打卡成功',
                             type: 'success'
                         });
                     } else {
-                        newthis.$message.error('该手机号已被注册');
-                        }
+                        newthis.$message.error('选手已打卡,不可重复打卡');
+                    }
+                    //存在不是选手的用户
                 },
                 error: function () {
                     console.log('error submit!!');
