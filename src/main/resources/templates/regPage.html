@@ -50,32 +50,31 @@
 
         </el-row><br>
         <div>
-            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px">
-                <el-form-item label="姓名">
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px" style="text-align: left;">
+                <el-form-item label="姓名" prop="name" style="width: 400px;">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="phone">
+                <el-form-item label="手机号" prop="phone" style="width: 400px;">
                     <el-input v-model="form.phone" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
+                <el-form-item label="性别" style="width: 400px;">
                     <el-radio-group v-model="form.sex">
                         <el-radio label="男"></el-radio>
                         <el-radio label="女"></el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="组别">
-                    <el-radio-group v-model="form.groupzb">
+                <el-form-item label="组别" style="width: 400px;">
+                    <el-radio-group v-model="form.groupzb" style="width: 400px;">
                         <el-radio label="短距离"></el-radio>
                         <el-radio label="中等距离"></el-radio>
                         <el-radio label="长距离"></el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="备注">
+                <el-form-item label="备注" style="width: 400px;">
                     <el-input type="textarea" v-model="form.bz"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="" @click="onSubmit" round>立即注册</el-button>
-                    <el-button round>取消注册</el-button>
                 </el-form-item>
             </el-form>
         </div>
