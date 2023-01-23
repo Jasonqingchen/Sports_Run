@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>选手成绩查询</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="renderer" content="webkit">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+<style type="text/css">
+    html,body{height:100%;}
+    body,*{margin:0;padding:0;text-decoration:none; border:0;list-style-type: none;}
+    body{ margin:0px;font-family: "微软雅黑","宋体",Arial;background-color:#ffffff;line-height:1.8;font-size:14px;}
+    input[type="submit"],input[type="reset"],input[type="button"],button { -webkit-appearance: none; }
+    .wrappers{width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
+    @media screen and (min-width: 1200px) {
+        .wrappers{max-width:640px; }
+    }
+    .wrapper1{width:100%;margin:0px auto; text-align:center; position: relative;}
+    .wrapper2{width:100%;margin:0px auto; text-align:center; position: relative; overflow:hidden;}
+    .wrapper2 img{ float:left;}
+    .wrapper3{width:100%;margin:0px auto; text-align:left; position: relative; }
+    /*img{ max-width:100%; height:auto; max-width:100% !important; height:auto !important;}*/
+    .znfuqi{width:100%; margin:0px auto; text-align:center; position:absolute; z-index:99;}
+    .znfanhuisy{ display:none !important;}
+        .bgimg {
+        background:url("/imgs/ghw.jpg");
+        position: relative;
+        margin:0px auto;
+        width: 100%;
+        height: 120px;
+  }
+</style>
+<body class="">
+<!--html代码 -->
+<div id="app">
+    <div class="wrappers">
+        <el-row>
+            <!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
+            <el-col :span="24"><div class="bgimg"></div></el-col>
+
+        </el-row><br>
+
+        <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
+            <el-form-item label="手机号" prop="phone" style="width: 400px;">
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="" @click="userList" round>查询</el-button>
+                <el-button @click="resetForm('form')" round>重置</el-button>
+            </el-form-item>
+        </el-form>
+
+
+
+
+        <div v-for="user in oudlist">
+        <el-collapse v-model="activeNames" @change="handleChange" accordion>
+                <el-collapse-item :name="user.phone">
+                    <template slot="title">
+                        {{user.name}}&nbsp;&nbsp;&nbsp;{{user.number}}&nbsp;&nbsp;&nbsp;{{user.sex}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="el-icon-user-solid" style="color: #1D8AFF;"></i>
+                    </template>
+                    <template>
+                        <el-table
+                                :data="tableData"
+                                style="width: 100%"
+                                max-height="250">
+                            <el-table-column
+                                    fixed
+                                    prop="cpname"
+                                    label="补给点"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="gpstime"
+                                    label="打卡时间"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="bz"
+                                    label="关门时间"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="sumtime"
+                                    label="总用时"
+                                    width="150">
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-collapse-item>
+        </el-collapse>
+            </div>
+        </div>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+        var regExp = new RegExp("^1[3578]\\d{9}$");
+        var validatePhone = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!regExp.test(value)) {
+            callback(new Error('请输入正确对手机号'));
+          } else {
+          callback();
+        }
+      };
+            return {
+            activeNames:'',//折叠参数传递值
+            oudlist: [],
+            tableData:[],
+              form: {
+                  phone:''
+                },
+                rules: {
+                      phone: [
+                        { validator: validatePhone, trigger: 'blur' }
+                      ]
+                }
+            };
+        },
+        //初始化
+        mounted: function () {
+        //this.tableData = []
+        this.userList();
+        },
+        methods: {
+         resetForm(form) {
+            this.$refs[form].resetFields();
+          },
+        //用户列表
+        userList () {
+        var newthis = this;
+        var addForm = newthis.form;
+          var regExpPhone = new RegExp("^1[3578]\\d{9}$");
+          if (addForm.phone!=="") {
+          if(!regExpPhone.test(addForm.phone)) {
+            newthis.$message.error('请填写正确对手机号格式');
+            return
+            }
+          }
+            var d = {
+                    'phone': addForm.phone
+                };
+            var url = '/list/seach';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'json',
+                success: function (result) {
+                newthis.oudlist = result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+
+        //折叠面板触发事件
+        handleChange(val) {
+            //查询选手的打卡信息和成绩情况
+        var newthis = this;
+        var url = '/list/seachUser';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {phone: val},
+                dataType: 'json',
+                success: function (result) {
+                newthis.tableData = result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        // 打卡
+        onSubmit() {
+        //拿到fromi表单数据 想后台进行提交 ajax
+          var addForm = this.form;
+          var regExpPhone = new RegExp("^1[3578]\\d{9}$");
+            var newthis = this;
+            if (addForm.phone == '') {
+            newthis.$message.error('手机号不能为空');
+            return
+            }
+            if(!regExpPhone.test(addForm.phone)) {
+            newthis.$message.error('请填写正确对手机号格式');
+            return
+            }
+            var d = {
+                'cpid': addForm.cpid,
+                'phone': addForm.phone,
+            };
+            var url = '/gps/save';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'text',
+                success: function (result) {
+                    if (result == 1) {
+                        newthis.$message({
+                            message: '打卡成功',
+                            type: 'success'
+                        });
+                    } else if (result == 2){
+                        newthis.$message.error('此手机号非选手注册手机号');
+                    } else {
+                    //存在不是选手的用户
+                        newthis.$message.error("选手"+result+'已打卡,  不可重复打卡');
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+            console.log('submit!');
+            }
+        }
+    })
+</script>
+<!--<script src="/echarts.js"></script>-->
+</html>

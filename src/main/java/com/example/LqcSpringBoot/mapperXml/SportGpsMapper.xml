@@ -33,4 +33,19 @@
   <select id="selectGpByPhone" resultMap="BaseResultMap" >
     select * from sport_gps where phone = #{phone}
   </select>
+  <!--根据条件查询选手信息-->
+  <select id="selectByPhone" resultMap="BaseResultMap">
+    SELECT
+    IFNULL( g.gpstime, '-' ) gpstime,
+    IFNULL( g.sumtime, '-' ) sumtime,
+    c.id,
+    IFNULL( c.cpname, '-' ) cpname,
+    IFNULL(c.cpendtime,'-') bz
+    FROM
+    sport_cp c
+    LEFT JOIN sport_gps g ON c.id = g.cpid
+    LEFT JOIN sport_user u ON u.phone = '15901088601'
+    GROUP BY
+    c.id
+  </select>
 </mapper>

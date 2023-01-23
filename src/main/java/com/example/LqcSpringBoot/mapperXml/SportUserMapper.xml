@@ -7,9 +7,10 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="zbz" property="bz" jdbcType="VARCHAR" />
     <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select name, sex, phone, bz, id
+    select name, sex, phone, bz, id,number
     from sport_user
   </select>
   <!--对手机号进行查重-->

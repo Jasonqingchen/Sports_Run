@@ -257,7 +257,7 @@ handleClose(done) {
      clickRow(index, rows) {
             document.getElementById("locatorQRCodeRef").style.display="";
             document.getElementById("locatorQRCodeRef").innerHTML = "";
-            document.getElementById('ename').innerHTML = rows[0].cpname;
+            document.getElementById('ename').innerHTML = rows[index].cpname;
             var newthis = this;
            var loading = newthis.$loading({
               lock: true,
@@ -265,8 +265,8 @@ handleClose(done) {
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            var urls = "http://127.0.0.1:8666/gps/tz?id="+rows[0].id;
-            console.log(urls);
+            var urls = "http://1.12.238.58:8666/gps/tz?id="+rows[index].id;
+            //console.log(urls);
 			var qrcode = new QRCode(document.getElementById("locatorQRCodeRef"),{
 				text: urls,
 				width: 200,

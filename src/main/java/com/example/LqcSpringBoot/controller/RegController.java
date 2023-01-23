@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -43,6 +40,12 @@ public class RegController {
     public Integer regUser (SportUser su){
         //验证手机号是否重复注册 如果重复注册着返回重复注册代码
         if(!stmapper.selectByPhone(su.getPhone()).isEmpty()){
+            String number = String.valueOf((int) (Math.random()*9000+1000));
+            if (su.getSex()=="男") {
+                su.setNumber("M"+number);
+            } else {
+                su.setNumber("F"+number);
+            }
             return PHONECF;
         } else {
             su.setId(UUID.randomUUID().toString().replace("-", ""));
