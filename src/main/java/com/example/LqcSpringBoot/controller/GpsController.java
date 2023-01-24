@@ -70,10 +70,10 @@ public class GpsController {
         String cpid = (String) map.get("cpid");
         String phone = (String) map.get("phone");
         //先去用户表查询看是否已经注册
-        List list1 = suMapper.selectByPhone(phone);
+        List<SportUser> list1 = suMapper.selectByPhone(phone);
         if (list1.size() > 0) {
             //判断是否已经打卡
-            List<SportGps> sgps = (List<SportGps>) sgMapper.selectGpByPhone(phone);
+            List<SportGps> sgps = (List<SportGps>) sgMapper.selectGpByPhoneAndCpid(phone,cpid);
             if (sgps.size() > 0) {
                 //有选手打卡数据返回姓名
                 String uname = sgps.get(0).getUsername();
@@ -101,6 +101,9 @@ public class GpsController {
                 String s = this.calculateTimeDifferenceBySimpleDateFormat(sportCp.getStarttime(), gpsdata);
                 sg.setSumtime(s);//当前用时
                 String min = this.min(sportCp.getStarttime(), gpsdata);
+                list1.forEach(ite->{
+                    ite.setMin(min);
+                });
                 sg.setBz(min);
                 sgMapper.insert(sg);
                 return "1";

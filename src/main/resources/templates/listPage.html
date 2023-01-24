@@ -49,7 +49,7 @@
             <el-col :span="24"><div class="bgimg"></div></el-col>
 
         </el-row><br>
-
+        <!--查询表单-->
         <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
             <el-form-item label="手机号" prop="phone" style="width: 400px;">
                 <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -59,15 +59,17 @@
                 <el-button @click="resetForm('form')" round>重置</el-button>
             </el-form-item>
         </el-form>
-
-
-
-
-        <div v-for="user in oudlist">
+        <div id="tab" style="color: red;"></div>
+        <!--循环列表-->
+        <div v-for="(user,index) in oudlist">
         <el-collapse v-model="activeNames" @change="handleChange" accordion>
-                <el-collapse-item :name="user.phone">
+                <el-collapse-item :name="user.phone" >
                     <template slot="title">
-                        {{user.name}}&nbsp;&nbsp;&nbsp;{{user.number}}&nbsp;&nbsp;&nbsp;{{user.sex}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="el-icon-user-solid" style="color: #1D8AFF;"></i>
+                        <el-tag
+                                type="danger"
+                                effect="dark">
+                            {{ index+1 }}
+                        </el-tag> &nbsp;&nbsp;&nbsp; {{user.name}}&nbsp;&nbsp;&nbsp;{{user.number}}&nbsp;&nbsp;&nbsp;{{user.sex}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="el-icon-user-solid" style="color: #1D8AFF;"></i>
                     </template>
                     <template>
                         <el-table
@@ -105,7 +107,6 @@
 </body>
 <script src="/vue/jquery.min.js"></script>
 <script src="/vue/vue.min.js"></script>
-<script src="/vue/element-ui.min.js"></script>
 <script type="text/javascript">
     new Vue({
         el: '#app',
@@ -164,7 +165,14 @@
                 data: d,
                 dataType: 'json',
                 success: function (result) {
+                if (result.length==0) {
+                //赋值div中的内容
+                document.getElementById("tab").innerHTML = '没有查到相关信息';
+                } else {
+                //清空div中的内容
+                document.getElementById("tab").innerHTML = '';
                 newthis.oudlist = result;
+                }
                 },
                 error: function () {
                     console.log('error submit!!');
@@ -239,5 +247,6 @@
         }
     })
 </script>
+<script src="/vue/element-ui.min.js"></script>
 <!--<script src="/echarts.js"></script>-->
 </html>

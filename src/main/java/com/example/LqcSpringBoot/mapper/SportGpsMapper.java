@@ -10,6 +10,6 @@ import java.util.List;
  * @date 2023/1/18 13:52
  */
 public interface SportGpsMapper extends BaseMapper<SportGps> {
-    List<SportGps> selectGpByPhone(String phone); //验证该选手是否已经打卡
+    List<SportGps> selectGpByPhoneAndCpid(String phone,String cpid); //验证该选手是否已经打卡
     List<SportGps>  selectByPhone(String phone);
 }

@@ -48,7 +48,7 @@ public class ListController {
             List list = suMapper.selectByPhone(map.get("phone").toString());
             return list;
         } else {
-            List<SportUser> sportUsers = suMapper.selectList(null);
+            List<SportUser> sportUsers = suMapper.selectOderByMin();
             return sportUsers;
         }
     }

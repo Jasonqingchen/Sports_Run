@@ -41,7 +41,7 @@ public class RegController {
         //验证手机号是否重复注册 如果重复注册着返回重复注册代码
         if(!stmapper.selectByPhone(su.getPhone()).isEmpty()){
             String number = String.valueOf((int) (Math.random()*9000+1000));
-            if (su.getSex()=="男") {
+            if ("男".equals(su.getSex())) {
                 su.setNumber("M"+number);
             } else {
                 su.setNumber("F"+number);

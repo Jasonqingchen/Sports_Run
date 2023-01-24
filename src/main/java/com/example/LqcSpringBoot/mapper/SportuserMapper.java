@@ -14,4 +14,5 @@ import java.util.List;
 @Mapper
 public interface SportuserMapper extends BaseMapper<SportUser> {
     List selectByPhone (String phone);//对手机号进行查重
+    List<SportUser> selectOderByMin();// 排序
 }

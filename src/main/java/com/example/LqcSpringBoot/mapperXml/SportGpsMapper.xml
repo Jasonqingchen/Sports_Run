@@ -30,8 +30,8 @@
     from sport_gps
   </select>
   <!--验证选手是否打卡-->
-  <select id="selectGpByPhone" resultMap="BaseResultMap" >
-    select * from sport_gps where phone = #{phone}
+  <select id="selectGpByPhoneAndCpid" resultMap="BaseResultMap" >
+    select * from sport_gps where phone = #{phone} and cpid = #{cpid}
   </select>
   <!--根据条件查询选手信息-->
   <select id="selectByPhone" resultMap="BaseResultMap">
