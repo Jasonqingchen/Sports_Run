@@ -43,9 +43,8 @@
 <div id="app">
     <div class="wrappers">
         <div style="text-align: center;">
-            <img src="/imgs/aebss.jpeg" style="width: 80%; height: 300px;">
+           <!-- <img src="/imgs/aebss.jpeg" style="width: 80%; height: 300px;">-->
         </div>
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">
         </div><br>
         <span id="ename"></span><br><br><br><br>
@@ -169,8 +168,61 @@
                         </el-table>
                     </template>
                 </el-tab-pane>
-                <!--<el-tab-pane label="角色管理">角色管理</el-tab-pane>
-                <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>-->
+                <el-tab-pane label="用户管理">
+                    <span slot="label"><i class="el-icon-user-solid"></i> 用户管理</span>
+                    <template>
+                        <el-table
+                                :data="UsertableData"
+                                style="width: 100%"
+                                max-height="250">
+                            <el-table-column
+                                    fixed
+                                    prop="name"
+                                    label="名字"
+                                    width="200">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="sex"
+                                    label="性别"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="phone"
+                                    label="联系方式"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="number"
+                                    label="参赛号码"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="phone"
+                                    label="联系方式"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="bz"
+                                    label="备注"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="120">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            @click="handleDelete(scope.$index, scope.row)"
+                                            type="text"
+                                            size="small">
+                                        删除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-tab-pane>
+                <!--<el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>-->
             </el-tabs>
         </el-card>
     </div>
@@ -190,6 +242,7 @@
             return {
             dialogVisible: false,
             tableData:[],//data table
+            UsertableData:[],//user data
              //定义表单项
  orRuleForm: {
         starttime: "",
@@ -209,6 +262,30 @@
         },
         //被调用方法
         methods: {
+        //del only one
+        handleDelete(index,row){
+            var newthis = this;
+            //单行删除
+            var url = '/user/del';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
 handleClose(done) {
         //关闭二维码的弹窗
         this.$confirm('确认关闭？')
@@ -234,8 +311,10 @@ handleClose(done) {
     },
     //标题栏点击事件
     handleClick(tab, event) {
-    //初始化查询
-    var newthis = this;
+
+        var newthis = this;
+    if (tab.index=='1') {
+            //初始化查询(补给点位列表)
             //请求后台
             var url = '/cp/cpselect';
             $.ajax({
@@ -250,8 +329,22 @@ handleClose(done) {
                     return false;
                 }
             });
-
-        console.log(tab, event);
+    } else if (tab.index=='2') {
+    var url = '/user/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.UsertableData=result
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+    }
+        //console.log(tab, event);
       },
     //点击生成二维码
      clickRow(index, rows) {
