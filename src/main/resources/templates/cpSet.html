@@ -274,6 +274,7 @@
                 dataType: 'json',
                 success: function (result) {
                 if (result=='1') {
+                newthis.listUser();
                 newthis.$message({
                             message: '删除成功',
                             type: 'success'
@@ -330,7 +331,14 @@ handleClose(done) {
                 }
             });
     } else if (tab.index=='2') {
-    var url = '/user/list';
+    newthis.listUser();
+    }
+        //console.log(tab, event);
+      },
+      //用户列表
+      listUser () {
+      var newthis = this;
+      var url = '/user/list';
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -343,8 +351,6 @@ handleClose(done) {
                     return false;
                 }
             });
-    }
-        //console.log(tab, event);
       },
     //点击生成二维码
      clickRow(index, rows) {

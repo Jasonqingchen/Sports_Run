@@ -30,9 +30,8 @@ public class UserController {
     @RequestMapping("/del")
     @ResponseBody
      public String delete(@RequestParam Map map) {
-        // int id = sumapper.deleteById(map.get("id").toString());
-         //return String.valueOf(id);
-         return "1";
+        int id = sumapper.deleteById(map.get("id").toString());
+         return String.valueOf(id);
      }
 
     /**
