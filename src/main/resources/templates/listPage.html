@@ -39,6 +39,72 @@
         width: 100%;
         height: 120px;
   }
+
+  #mytable {
+        width: 600px;
+        padding: 0;
+        margin: 0;
+    }
+    .row {
+        width: 600px;
+    }
+
+    caption {
+        padding: 0 0 5px 0;
+        width: 700px;
+        font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        text-align: right;
+    }
+
+    th {
+        font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #4f6b72;
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        border-top: 1px solid #C1DAD7;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 6px 6px 6px 12px;
+        background: #CAE8EA  no-repeat;
+    }
+
+    th.nobg {
+        border-top: 0;
+        border-left: 0;
+        border-right: 1px solid #C1DAD7;
+        background: none;
+    }
+
+    td {
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
+    }
+
+
+    td.alt {
+        background: #F5FAFA;
+        color: #797268;
+    }
+
+    th.spec {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #fff no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    }
+
+    th.specalt {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #f5fafa no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #797268;
+    }
 </style>
 <body class="">
 <!--html代码 -->
@@ -69,36 +135,31 @@
                                 type="danger"
                                 effect="dark">
                             {{ index+1 }}
-                        </el-tag> &nbsp;&nbsp;&nbsp; {{user.name}}&nbsp;&nbsp;&nbsp;{{user.number}}&nbsp;&nbsp;&nbsp;{{user.sex}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="el-icon-user-solid" style="color: #1D8AFF;"></i>
+                        </el-tag> &nbsp;&nbsp;&nbsp; {{user.name}}&nbsp;&nbsp;&nbsp;{{user.number}}&nbsp;&nbsp;&nbsp;{{user.sex}}&nbsp;&nbsp;&nbsp;&nbsp;
+                        <template v-if="user.sex==='男'">
+                            <i class="el-icon-user-solid" style="color: #1D8AFF;"></i>
+                        </template>
+                        <span v-else>
+                        <i class="el-icon-user-solid" style="color: #FF0000;"></i>
+                        </span>
+                        </template>
                     </template>
-                    <template>
-                        <el-table
-                                :data="tableData"
-                                style="width: 100%"
-                                max-height="250">
-                            <el-table-column
-                                    fixed
-                                    prop="cpname"
-                                    label="补给点"
-                                    width="150">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="gpstime"
-                                    label="打卡时间"
-                                    width="150">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="bz"
-                                    label="关门时间"
-                                    width="150">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="sumtime"
-                                    label="总用时"
-                                    width="150">
-                            </el-table-column>
-                        </el-table>
-                    </template>
+
+                    <table id="mytable" cellspacing="0">
+                        <caption> </caption>
+                        <tr>
+                            <th scope="col">补给点</th>
+                            <th scope="col">打卡时间</th>
+                            <th scope="col">关门时间</th>
+                            <th scope="col">总用时</th>
+                        </tr>
+                            <tr v-for="(items,index) in tableData">
+                                <td class="row" style="text-align:left;">{{items.cpname}}</td>
+                                <td class="row" style="text-align:left;">{{items.gpstime}}</td>
+                                <td class="row" style="text-align:left;">{{items.bz}}</td>
+                                <td class="row" style="text-align:left;">{{items.sumtime}}</td>
+                            </tr>
+                    </table>
                 </el-collapse-item>
         </el-collapse>
             </div>
@@ -137,7 +198,7 @@
         },
         //初始化
         mounted: function () {
-        //this.tableData = []
+        this.tableData = [{cpname:'-',gpstime:'-',sumtime:'-',bz:'-'}];
         this.userList();
         },
         methods: {

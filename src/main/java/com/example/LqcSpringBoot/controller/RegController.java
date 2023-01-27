@@ -40,14 +40,14 @@ public class RegController {
     public Integer regUser (SportUser su){
         //验证手机号是否重复注册 如果重复注册着返回重复注册代码
         if(!stmapper.selectByPhone(su.getPhone()).isEmpty()){
+            return PHONECF;
+        } else {
             String number = String.valueOf((int) (Math.random()*9000+1000));
             if ("男".equals(su.getSex())) {
                 su.setNumber("M"+number);
             } else {
                 su.setNumber("F"+number);
             }
-            return PHONECF;
-        } else {
             su.setId(UUID.randomUUID().toString().replace("-", ""));
             return stmapper.insert(su);
         }

@@ -44,8 +44,8 @@
     FROM
     sport_cp c
     LEFT JOIN sport_gps g ON c.id = g.cpid
-    LEFT JOIN sport_user u ON u.phone = '15901088601'
-    GROUP BY
-    c.id
+    LEFT JOIN sport_user u ON u.phone = #{phone}
+    GROUP BY c.id
+    ORDER BY c.indexid
   </select>
 </mapper>

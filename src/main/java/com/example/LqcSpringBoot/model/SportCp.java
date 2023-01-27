@@ -24,5 +24,7 @@ public class SportCp implements Serializable {
 
     private String endtime;
 
+    private String indexid;
+
     private static final long serialVersionUID = 1L;
 }

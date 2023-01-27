@@ -55,6 +55,9 @@ public class CpController {
                 cp.setCpendtime(cp.getCpendtime().toString());
                 cp.setId(UUID.randomUUID().toString().replace("-",""));
                 cp.setUserid("0");
+                if ("".equals(cp.getIndexid())) {
+                    cp.setIndexid("0");
+                }
                 scpMapper.insert(cp);
         });
         return "1";

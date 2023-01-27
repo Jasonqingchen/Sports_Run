@@ -104,7 +104,7 @@
                                                 <!--增加行减少行按钮-->
                                                 <div class="addDelete">
                                                     <i v-if="index == orRuleForm.orFormList.length - 1"
-                                                       @click="addOrHanlder"
+                                                       @click="addOrHanlder(index)"
                                                        class="el-icon-circle-plus-outline"
                                                     ></i>
                                                     <i v-if="index !== orRuleForm.orFormList.length - 1"
@@ -251,6 +251,7 @@
           {
             cpname: "",
             cpendtime: "",
+            indexid:''
           },
         ],
       },
@@ -296,10 +297,11 @@ handleClose(done) {
           .catch(_ => {});
       },
             //表单新增行
-    addOrHanlder() {
+    addOrHanlder(index) {
       let obj = {
         cpname: "",
         cpendtime: "",
+        indexid: index+1
       };
       this.orRuleForm.orFormList.push(obj);
     },

@@ -103,8 +103,9 @@ public class GpsController {
                 String min = this.min(sportCp.getStarttime(), gpsdata);
                 list1.forEach(ite->{
                     ite.setMin(min);
+                    suMapper.updateById(ite);
                 });
-                sg.setBz(min);
+               // sg.setBz(min);
                 sgMapper.insert(sg);
                 return "1";
             }
