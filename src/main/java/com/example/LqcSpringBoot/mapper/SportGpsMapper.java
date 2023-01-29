@@ -12,4 +12,6 @@ import java.util.List;
 public interface SportGpsMapper extends BaseMapper<SportGps> {
     List<SportGps> selectGpByPhoneAndCpid(String phone,String cpid); //验证该选手是否已经打卡
     List<SportGps>  selectByPhone(String phone);
+    List<SportGps>  selectByPhones(String phone);//验证这个电话号码是否打过卡
+
 }

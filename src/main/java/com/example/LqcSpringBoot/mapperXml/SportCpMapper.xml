@@ -10,9 +10,12 @@
     <result column="starttime" jdbcType="VARCHAR" property="starttime" />
     <result column="endtime" jdbcType="VARCHAR" property="endtime" />
     <result column="indexid" jdbcType="VARCHAR" property="indexid" />
+
+    <result column="gpstime" jdbcType="VARCHAR" property="gpstime" />
+    <result column="sumtime" jdbcType="VARCHAR" property="sumtime" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, cpname, cpendtime, userid, bz, starttime, endtime,indexid
+    select id, cpname, cpendtime, userid, bz, starttime, endtime,indexid,sumtime,gpstime
     from sport_cp
   </select>
 </mapper>

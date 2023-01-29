@@ -3,8 +3,8 @@ package com.example.LqcSpringBoot.controller;
 import com.example.LqcSpringBoot.mapper.SportCpMapper;
 import com.example.LqcSpringBoot.mapper.SportGpsMapper;
 import com.example.LqcSpringBoot.mapper.SportuserMapper;
+import com.example.LqcSpringBoot.model.SportCp;
 import com.example.LqcSpringBoot.model.SportGps;
-import com.example.LqcSpringBoot.model.SportUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,13 +44,8 @@ public class ListController {
     @RequestMapping("/seach")
     @ResponseBody
     public List seach(@RequestParam Map map) throws InterruptedException {
-        if (map.get("phone")!="") {
-            List list = suMapper.selectByPhone(map.get("phone").toString());
+            List list = suMapper.selectByMap(map.get("phone").toString(),map.get("sex").toString());
             return list;
-        } else {
-            List<SportUser> sportUsers = suMapper.selectOderByMin();
-            return sportUsers;
-        }
     }
 
     /**
@@ -59,8 +54,18 @@ public class ListController {
      */
     @RequestMapping("/seachUser")
     @ResponseBody
-    public List<SportGps>  seachUser (@RequestParam Map map) {
-        List<SportGps> list = sgMapper.selectByPhone(map.get("phone").toString());
-        return list;
+    public List  seachUser (@RequestParam Map map) {
+
+        List<SportGps> sg = sgMapper.selectByPhones(map.get("phone").toString());
+            List<SportCp> sportCps = scMapper.selectList(null);
+            sportCps.forEach(sportCp ->{
+                sg.forEach(sportSg ->{
+                    if (sportCp.getId().equals(sportSg.getCpid())) {
+                        sportCp.setGpstime(sportSg.getGpstime());
+                        sportCp.setSumtime(sportSg.getSumtime());
+                    }
+                });
+            });
+            return sportCps;
     }
 }

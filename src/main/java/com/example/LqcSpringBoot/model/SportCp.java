@@ -26,5 +26,9 @@ public class SportCp implements Serializable {
 
     private String indexid;
 
+    private String gpstime;
+
+    private String sumtime;
+
     private static final long serialVersionUID = 1L;
 }

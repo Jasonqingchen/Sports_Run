@@ -35,17 +35,23 @@
   </select>
   <!--根据条件查询选手信息-->
   <select id="selectByPhone" resultMap="BaseResultMap">
-    SELECT
+    select * from (SELECT
     IFNULL( g.gpstime, '-' ) gpstime,
     IFNULL( g.sumtime, '-' ) sumtime,
     c.id,
     IFNULL( c.cpname, '-' ) cpname,
-    IFNULL(c.cpendtime,'-') bz
+    IFNULL(c.cpendtime,'-') bz,
+    g.phone,
+    c.indexid
     FROM
     sport_cp c
-    LEFT JOIN sport_gps g ON c.id = g.cpid
-    LEFT JOIN sport_user u ON u.phone = #{phone}
-    GROUP BY c.id
-    ORDER BY c.indexid
+    LEFT JOIN sport_gps g ON c.id = g.cpid) s
+    where s.gpstime = '-' or s.phone = #{phone} GROUP BY s.id
+    ORDER BY s.indexid
   </select>
+  <!--验证是否打过卡-->
+  <select id="selectByPhones" resultMap="BaseResultMap" >
+    select * from sport_gps where phone = #{phone}
+  </select>
+
 </mapper>
