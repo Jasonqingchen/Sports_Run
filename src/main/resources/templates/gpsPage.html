@@ -126,6 +126,9 @@
                 data: d,
                 dataType: 'text',
                 success: function (result) {
+                if (result == 3) {
+                newthis.$message.error('您已经退赛 无法参与打卡');
+                }
                     if (result == 1) {
                         newthis.$message({
                             message: '打卡成功',

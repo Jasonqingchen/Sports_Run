@@ -71,6 +71,9 @@ public class GpsController {
         String phone = (String) map.get("phone");
         //先去用户表查询看是否已经注册
         List<SportUser> list1 = suMapper.selectByPhone(phone);
+        if ("退赛".equals(list1.get(0).getStatus())) {
+            return "3";
+        }
         if (list1.size() > 0) {
             //判断是否已经打卡
             List<SportGps> sgps = (List<SportGps>) sgMapper.selectGpByPhoneAndCpid(phone,cpid);
@@ -102,6 +105,14 @@ public class GpsController {
                 sg.setSumtime(s);//当前用时
                 String min = this.min(sportCp.getStarttime(), gpsdata);
                 list1.forEach(ite->{
+                    //判断当前到卡是否为重点打卡 如果是 则赋值 完赛 否则为 比赛中 退赛需要收到修改
+                    Integer integer = scMapper.selectCount(null)-1;
+                    SportCp sportCp1 = scMapper.selectById(cpid);
+                    if (String.valueOf(integer).equals(sportCp1.getIndexid())) {
+                        ite.setStatus("完赛");
+                    } else {
+                        ite.setStatus("比赛中");
+                    }
                     ite.setMin(min);
                     ite.setBz(sportCp.getIndexid());
                     suMapper.updateById(ite);

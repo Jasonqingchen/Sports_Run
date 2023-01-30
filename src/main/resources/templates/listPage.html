@@ -146,6 +146,16 @@
                         <span v-else>
                         <i class="el-icon-user-solid" style="color: #FF0000;"></i>
                         </span>
+                        <template v-if="user.status==='比赛中'">
+                            &nbsp;&nbsp;&nbsp;
+                            <span style="color:#1CFF11;">{{user.status}}</span>
+                        </template>
+                        <span v-else>
+                            &nbsp;&nbsp;&nbsp;
+                        <span style="color:#FF0000;">{{user.status}}</span>
+                        </span>
+
+
                         </template>
                     </template>
 

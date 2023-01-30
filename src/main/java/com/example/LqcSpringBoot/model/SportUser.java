@@ -24,5 +24,7 @@ public class SportUser implements Serializable {
 
     private String min;
 
+    private String status;
+
     private static final long serialVersionUID = 1L;
 }
