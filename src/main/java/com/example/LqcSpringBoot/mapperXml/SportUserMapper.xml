@@ -44,6 +44,6 @@
     <if test = " sex != '' ">
       and sex =#{sex}
     </if>
-    order by min
+    order by bz desc
   </select>
 </mapper>
