@@ -10,7 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.List;
 import java.util.Map;
 
@@ -44,10 +45,32 @@ public class ListController {
     @RequestMapping("/seach")
     @ResponseBody
     public List seach(@RequestParam Map map) throws InterruptedException {
-            List list = suMapper.selectByMap(map.get("phone").toString(),map.get("sex").toString());
+        boolean pho = this.isPhone(map.get("tj").toString());
+        String name = "";
+        String phone = "";
+        if (pho){
+            phone = map.get("tj").toString();
+        } else {
+            name = map.get("tj").toString();
+        }
+        List list = suMapper.selectByMap(phone,map.get("sex").toString(),name);
             return list;
     }
-
+    /**
+     * @param phone 字符串类型的手机号
+     * 传入手机号,判断后返回
+     * true为手机号,false相反
+     * */
+    public static boolean isPhone(String phone) {
+        String regex = "^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$";
+        if (phone.length() != 11) {
+            return false;
+        } else {
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phone);
+            return m.matches();
+        }
+    }
     /**
      * 查询每个用户的打卡情况
      * @return

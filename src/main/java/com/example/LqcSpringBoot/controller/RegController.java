@@ -48,6 +48,7 @@ public class RegController {
             } else {
                 su.setNumber("F"+number);
             }
+            su.setStatus("未开始");
             su.setId(UUID.randomUUID().toString().replace("-", ""));
             return stmapper.insert(su);
         }

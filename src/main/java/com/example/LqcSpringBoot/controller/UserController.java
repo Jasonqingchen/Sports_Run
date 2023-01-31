@@ -35,6 +35,20 @@ public class UserController {
      }
 
     /**
+     * 退赛
+     * @param map
+     * @return
+     */
+    @RequestMapping("/out")
+    @ResponseBody
+    public String out(@RequestParam Map map) {
+        SportUser su= sumapper.selectById(map.get("id").toString());
+        su.setStatus("退赛");
+        int id = sumapper.updateById(su);
+        return String.valueOf(id);
+    }
+
+    /**
      * user list
      */
     @RequestMapping("/list")
