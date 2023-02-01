@@ -35,23 +35,16 @@
         width: 100%;
         height: 120px;
   }
-  .top {
-        background:url("/imgs/top.png");
-        width: 44%;
-        height: 50px;
-        position: fixed;
-        bottom: 0;
-  }
-    .el-collapse-item__content{
-    width: 200px;
-    }
+
   #mytable {
         width:30%;margin:0px auto; text-align:center; position: relative;
     }
     .row {
         width: 350px;
     }
-
+    .divhead{
+　　top:10px;left:0px;height:50px;z-index:999;
+    }
     caption {
         padding: 0 0 5px 0;
         width: 350px;
@@ -106,31 +99,34 @@
 <!--html代码 -->
 <div id="app">
     <div class="wrappers">
-        <el-row>
-            <!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
-            <el-col :span="24"><div class="bgimg"></div></el-col>
+        <div class="divhead">
+            <el-row>
+                <!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
+                <el-col :span="24"><div class="bgimg"></div></el-col>
 
-        </el-row><br>
-        <!--查询表单-->
-        <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
-            <div style="text-align: left;">
-                <el-form-item  label="条件" prop="tj" style="width: 400px;">
-                    <el-input v-model="form.tj" autocomplete="off" placeholder="输入姓名或手机号"></el-input>
-                </el-form-item>
-                <el-form-item label="性别" prop="sex" style="width: 400px;">
-                    <el-radio-group v-model="form.sex">
-                        <el-radio label="男"></el-radio>
-                        <el-radio label="女"></el-radio>
-                    </el-radio-group>&nbsp;&nbsp;&nbsp;
-                    <el-button type="" @click="userList">查询</el-button>
-                    <el-button @click="resetForm('form')" type="danger">重置</el-button>
-                </el-form-item>
-                <el-form-item>
+            </el-row><br>
+            <!--查询表单-->
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
+                <div style="text-align: left;">
+                    <el-form-item  label="条件" prop="tj" style="width: 400px;">
+                        <el-input v-model="form.tj" autocomplete="off" placeholder="输入姓名或手机号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别" prop="sex" style="width: 400px;">
+                        <el-radio-group v-model="form.sex">
+                            <el-radio label="男"></el-radio>
+                            <el-radio label="女"></el-radio>
+                        </el-radio-group>&nbsp;&nbsp;&nbsp;
+                        <el-button type="" @click="userList">查询</el-button>
+                        <el-button @click="resetForm('form')" type="danger">重置</el-button>
+                    </el-form-item>
+                    <el-form-item>
 
-                </el-form-item>
-            </div>
+                    </el-form-item>
+                </div>
 
-        </el-form>
+            </el-form>
+        </div><br><br><br><br><br><br><br><br><br>
+
         <div id="tab" style="color: red;"></div>
         <!--循环列表-->
         <div v-for="(user,index) in oudlist">
@@ -149,16 +145,16 @@
                                 <span  style="text-align: right;width:20px;">{{user.number}}</span>&nbsp;&nbsp;&nbsp;
                                 <span  style="text-align: right;width:30px;">{{user.sex}}</span>&nbsp;&nbsp;&nbsp;
                                     <template v-if="user.status==='比赛中'">
-                                        <span style="text-align: right;color:#007200;width:20px;">{{user.status}}</span>
+                                        <span style="text-align: right;color:#FFB100;width:20px;">{{user.status}}</span>
                                     </template>
                                     <template v-if="user.status==='未开始'">
                                         <span style="text-align: right;color:#676767;width:20px;">{{user.status}}</span>
                                     </template>
                                     <template v-if="user.status==='完赛'">
-                                        <span style="text-align: right;color:red;width:20px;">{{user.status}}</span>
+                                        <span style="text-align: right;color:#007D39;width:20px;">{{user.status}}</span>
                                     </template>
                                     <template v-if="user.status==='退赛'">
-                                        <span style="text-align: right;color:676767;width:20px;">{{user.status}}</span>
+                                        <span style="text-align: right;color:#830000;width:20px;">{{user.status}}</span>
                                     </template>
                             </tr>
                         </table>
@@ -193,9 +189,6 @@
                 </el-collapse-item>
         </el-collapse>
             </div>
-        <el-row>
-            <el-col :span="24"><div class="top"></div></el-col>
-        </el-row>
         </div>
 </div>
 </body>

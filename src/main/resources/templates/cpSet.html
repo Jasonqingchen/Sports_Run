@@ -130,7 +130,7 @@
                         <el-table
                                 :data="tableData"
                                 style="width: 100%"
-                                max-height="250">
+                                max-height="550">
                             <el-table-column
                                     fixed
                                     prop="starttime"
@@ -172,9 +172,9 @@
                     <span slot="label"><i class="el-icon-user-solid"></i> 用户管理</span>
                     <template>
                         <el-table
-                                :data="UsertableData"
+                                :data="UsertableData.filter(data => !search || data.number.toLowerCase().includes(search.toLowerCase()))"
                                 style="width: 100%"
-                                max-height="250">
+                                max-height="550">
                             <el-table-column
                                     fixed
                                     prop="name"
@@ -187,11 +187,6 @@
                                     width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="phone"
-                                    label="联系方式"
-                                    width="220">
-                            </el-table-column>
-                            <el-table-column
                                     prop="number"
                                     label="参赛号码"
                                     width="220">
@@ -202,14 +197,26 @@
                                     width="220">
                             </el-table-column>
                             <el-table-column
+                                    prop="status"
+                                    label="状态"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
                                     prop="bz"
                                     label="备注"
                                     width="120">
                             </el-table-column>
+
                             <el-table-column
                                     fixed="right"
                                     label="操作"
-                                    width="120">
+                                    width="300">
+                                <template slot="header" slot-scope="scope">
+                                    <el-input
+                                            v-model="search"
+                                            size="mini"
+                                            placeholder="输入号码搜索"/>
+                                </template>
                                 <template slot-scope="scope">
                                     <el-button
                                             @click="handleDelete(scope.$index, scope.row)"
@@ -222,6 +229,12 @@
                                             type="text"
                                             size="small">
                                         退赛
+                                    </el-button>
+                                    <el-button
+                                            @click="delout(scope.$index, scope.row)"
+                                            type="text"
+                                            size="small">
+                                        取消退赛
                                     </el-button>
                                 </template>
                             </el-table-column>
@@ -249,6 +262,7 @@
             dialogVisible: false,
             tableData:[],//data table
             UsertableData:[],//user data
+            search: '',
              //定义表单项
  orRuleForm: {
         starttime: "",
@@ -274,6 +288,31 @@
         var newthis = this;
             //退赛
             var url = '/user/out';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.listUser();
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        //取消退赛
+        delout(index,row) {
+        var newthis = this;
+            //退赛
+            var url = '/user/delout';
             $.ajax({
                 type: 'POST',
                 url: url,

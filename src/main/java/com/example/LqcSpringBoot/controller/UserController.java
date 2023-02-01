@@ -49,6 +49,20 @@ public class UserController {
     }
 
     /**
+     * 取消退赛
+     * @param map
+     * @return
+     */
+    @RequestMapping("/delout")
+    @ResponseBody
+    public String delout(@RequestParam Map map) {
+        SportUser su= sumapper.selectById(map.get("id").toString());
+        su.setStatus("比赛中");
+        int id = sumapper.updateById(su);
+        return String.valueOf(id);
+    }
+
+    /**
      * user list
      */
     @RequestMapping("/list")
