@@ -132,7 +132,6 @@
                                 style="width: 100%"
                                 max-height="550">
                             <el-table-column
-                                    fixed
                                     prop="starttime"
                                     label="比赛日期"
                                     width="200">
@@ -172,11 +171,11 @@
                     <span slot="label"><i class="el-icon-user-solid"></i> 用户管理</span>
                     <template>
                         <el-table
-                                :data="UsertableData.filter(data => !search || data.number.toLowerCase().includes(search.toLowerCase()))"
+                                :data="UsertableData.filter(data => !search || data.number.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1) * pageSize,currentPage * pageSize)"
                                 style="width: 100%"
-                                max-height="550">
+                                max-height="550"
+                                id="UsertableData">
                             <el-table-column
-                                    fixed
                                     prop="name"
                                     label="名字"
                                     width="200">
@@ -208,7 +207,6 @@
                             </el-table-column>
 
                             <el-table-column
-                                    fixed="right"
                                     label="操作"
                                     width="300">
                                 <template slot="header" slot-scope="scope">
@@ -221,7 +219,8 @@
                                     <el-button
                                             @click="handleDelete(scope.$index, scope.row)"
                                             type="text"
-                                            size="small">
+                                            size="small"
+                                            style="color: red;">
                                         删除
                                     </el-button>
                                     <el-button
@@ -233,13 +232,29 @@
                                     <el-button
                                             @click="delout(scope.$index, scope.row)"
                                             type="text"
-                                            size="small">
+                                            size="small"
+                                    style="color:#CD7603">
                                         取消退赛
                                     </el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
-                    </template>
+                    </template><br><br>
+                    <el-row>
+                        <el-col :span="12" style="text-align: left;">
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="currentPage"
+                                    :page-sizes="[10, 200, 300, 400]"
+                                    :page-size="pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="total">
+                            </el-pagination>
+                        </el-col>
+                        <el-col :span="12"><div style="text-align: right;"><el-button @click="Export" size="mini">导出</el-button></div></el-col>
+                    </el-row>
+
                 </el-tab-pane>
                 <!--<el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>-->
             </el-tabs>
@@ -251,6 +266,7 @@
 <script src="/vue/vue.min.js"></script>
 <script type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
 <script src="/js/qrcode.js"></script>
+<script src="/js/excel.js"></script>
 <!--<script src="/vue/element-ui.min.js"></script>-->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <!--<script src="/echarts.js"></script>-->
@@ -259,6 +275,9 @@
         el: '#app',
         data() {
             return {
+            total: '',
+            currentPage: 1,
+            pageSize: 10,
             dialogVisible: false,
             tableData:[],//data table
             UsertableData:[],//user data
@@ -283,6 +302,28 @@
         },
         //被调用方法
         methods: {
+        //前台导出方法
+         Export(){
+         $("#UsertableData").table2excel({  //exceltable为存放数据的table
+       　　　　// 不被导出的表格行的CSS class类
+       　　　　exclude: ".noExl",
+       　　　　// 导出的Excel文档的名称
+       　　　　name: "表格-" + new Date().getTime(),
+       　　　　// Excel文件的名称
+        　　　　filename: "表格-" + new Date().getTime(),
+        　　　　bootstrap: false
+    　　    });
+        },
+        //分页
+        handleSizeChange(val) {
+        var newthis = this;
+        //一页显示多少条
+          newthis.pageSize=val;
+      },
+      handleCurrentChange(val) {
+        var newthis = this;
+        newthis.currentPage=val;
+      },
         //退赛
         out(index,row) {
         var newthis = this;
@@ -417,6 +458,7 @@ handleClose(done) {
                 dataType: 'json',
                 success: function (result) {
                 newthis.UsertableData=result
+                newthis.total = newthis.UsertableData.length;
                 },
                 error: function () {
                     console.log('error submit!!');
