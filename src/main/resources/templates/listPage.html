@@ -134,29 +134,29 @@
                 <el-collapse-item :name="user.phone" >
                     <template slot="title">
                         &nbsp;&nbsp;&nbsp;&nbsp;<el-tag
-                            type="warning"
+                            type="danger"
                             effect="dark">
-                        {{ index+1 }}
-                    </el-tag>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        第{{ index+1 }}名
+                    </el-tag>&nbsp;&nbsp;&nbsp;
                         <table>
                             <tr>
                                 <span  style="text-align: left; width:50px;">{{user.name}}</span>&nbsp;&nbsp;&nbsp;
-                                <span  style="text-align: right;width:20px;">{{user.number}}</span>&nbsp;&nbsp;&nbsp;
-                                <span  style="text-align: right;width:30px;">{{user.sex}}</span>&nbsp;&nbsp;&nbsp;
-                                    <template v-if="user.status==='比赛中'">
-                                        <span style="text-align: right;color:#FFB100;width:20px;">{{user.status}}</span>
-                                    </template>
-                                    <template v-if="user.status==='未开始'">
-                                        <span style="text-align: right;color:#676767;width:20px;">{{user.status}}</span>
-                                    </template>
-                                    <template v-if="user.status==='完赛'">
-                                        <span style="text-align: right;color:#007D39;width:20px;">{{user.status}}</span>
-                                    </template>
-                                    <template v-if="user.status==='退赛'">
-                                        <span style="text-align: right;color:#830000;width:20px;">{{user.status}}</span>
-                                    </template>
-                            </tr>
+                                <span  style="text-align: left;width:20px;">{{user.number}}</span>&nbsp;&nbsp;
+                                <span  style="text-align: right; width:70px;">{{user.groupzb}}</span>&nbsp;<br><br>
+                            </tr><br><br>
+                                <template v-if="user.status==='比赛中'">
+                                    <span style="text-align: left;color:#FFB100;width:30px;">{{user.status}}</span>
+                                </template>
+                                <template v-if="user.status==='未开始'">
+                                    <span style="text-align: left;color:#676767;width:30px;">{{user.status}}</span>
+                                </template>
+                                <template v-if="user.status==='完赛'">
+                                    <span style="text-align: left;color:#007D39;width:30px;">{{user.status}}</span>
+                                </template>
+                                <template v-if="user.status==='退赛'">
+                                    <span style="text-align: left;color:#830000;width:30px;">{{user.status}}</span>
+                                </template><br>
+                                <span style="text-align: left;color:#676767;width:100px;">{{user.sumtime}}</span>
                         </table>
                         <!--
 

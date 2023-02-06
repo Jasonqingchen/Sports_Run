@@ -10,6 +10,7 @@
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="min" property="min" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="sumtime" property="sumtime" jdbcType="VARCHAR" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap" >
     select name, sex, phone, bz, id,number,min,status
@@ -37,17 +38,20 @@
   </select>
   <!--所有选手进行排序-->
   <select id="selectByMap" resultMap="BaseResultMap">
-    select *
-    from sport_user where 1=1
+    SELECT u.*,
+    IFNULL(MAX(g.sumtime), '-' ) sumtime
+    FROM sport_user u LEFT JOIN
+    sport_gps g ON g.phone = u.phone  where 1=1
     <if test = " phone != '' ">
-      and phone =#{phone}
+      and u.phone =#{phone}
     </if>
     <if test = " sex != '' ">
-      and sex =#{sex}
+      and u.sex =#{sex}
     </if>
     <if test = " name != '' ">
-      and name like concat('%',#{name},'%')
+      and u.name like concat('%',#{name},'%')
     </if>
-    order by bz desc
+    GROUP BY u.name
+    order by u.bz desc
   </select>
 </mapper>
