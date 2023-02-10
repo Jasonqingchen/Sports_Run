@@ -22,6 +22,16 @@ public class UserController {
     @Autowired
     private SportuserMapper sumapper;
 
+
+    /**
+     * 签到跳转页面
+     */
+    @RequestMapping("/tzsignin")
+    public String issignin() {
+        return "signin";
+
+    }
+
     /**
      * by userid del user table
      * @param map
@@ -60,6 +70,20 @@ public class UserController {
         su.setStatus("比赛中");
         int id = sumapper.updateById(su);
         return String.valueOf(id);
+    }
+
+    /**
+     * 签到 更新 字段状态为未签到
+     */
+    @RequestMapping("/sign")
+    @ResponseBody
+    public String sign(@RequestParam Map map) {
+        List phone = sumapper.selectByPhone(map.get("phone").toString());
+        if (phone.size()==0) {
+            return "2";
+        }
+        int res = sumapper.updateByPhone(map.get("phone").toString());
+        return String.valueOf(res);
     }
 
     /**

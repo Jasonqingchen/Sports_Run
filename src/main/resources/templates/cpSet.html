@@ -201,11 +201,18 @@
                                     width="150">
                             </el-table-column>
                             <el-table-column
-                                    prop="bz"
-                                    label="备注"
-                                    width="120">
+                                    prop="issignin"
+                                    label="打卡情况"
+                                    :filters="[{ text: '未签到', value: '未签到' }, { text: '已签到', value: '已签到' }]"
+                                    :filter-method=""
+                                    filter-placement="bottom-end"
+                                    width="150">
+                                <template slot-scope="scope">
+                                    <el-tag
+                                            :type="scope.row.issignin === '未签到' ? 'danger' : 'success'"
+                                            disable-transitions>{{scope.row.issignin}}</el-tag>
+                                </template>
                             </el-table-column>
-
                             <el-table-column
                                     label="操作"
                                     width="300">
@@ -302,6 +309,10 @@
         },
         //被调用方法
         methods: {
+        //标签方法
+        (value, row) {
+        return row.issignin === value;
+        },
         //前台导出方法
          Export(){
          $("#UsertableData").table2excel({  //exceltable为存放数据的table

@@ -28,5 +28,7 @@ public class SportUser implements Serializable {
 
     private String sumtime;
 
+    private String issignin;
+
     private static final long serialVersionUID = 1L;
 }

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>选手签到页面</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="renderer" content="webkit">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+<style type="text/css">
+    html,body{height:100%;}
+    body,*{margin:0;padding:0;text-decoration:none; border:0;list-style-type: none;}
+    body{ margin:0px;font-family: "微软雅黑","宋体",Arial;background-color:#ffffff;line-height:1.8;font-size:14px;}
+    input[type="submit"],input[type="reset"],input[type="button"],button { -webkit-appearance: none; }
+    .wrappers{width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
+    @media screen and (min-width: 1200px) {
+        .wrappers{max-width:640px; }
+    }
+    .wrapper1{width:100%;margin:0px auto; text-align:center; position: relative;}
+    .wrapper2{width:100%;margin:0px auto; text-align:center; position: relative; overflow:hidden;}
+    .wrapper2 img{ float:left;}
+    .wrapper3{width:100%;margin:0px auto; text-align:left; position: relative; }
+    /*img{ max-width:100%; height:auto; max-width:100% !important; height:auto !important;}*/
+    .znfuqi{width:100%; margin:0px auto; text-align:center; position:absolute; z-index:99;}
+    .znfanhuisy{ display:none !important;}
+        .bgimg {
+        background:url("/imgs/ghw.jpg");
+        position: relative;
+        margin:0px auto;
+        width: 100%;
+        height: 120px;
+  }
+</style>
+<body class="">
+<!--html代码 -->
+<div id="app">
+    <div class="wrappers">
+        <el-row>
+<!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
+                        <el-col :span="24"><div class="bgimg"></div></el-col>
+
+        </el-row><br>
+        <div>
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="120px">
+                <el-form-item label="CPID" prop="cpid" style="display: none;">
+                    <el-input v-model="form.cpid" autocomplete="off" id="cpid" style="display: none;" oninput="if(value.length>100)value=value.slice(0,100)"></el-input>
+                </el-form-item>
+                <br><br><br><br><br>
+                <el-form-item label="选手本人手机号" prop="phone">
+                    <el-input v-model="form.phone" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="success" style="width: 100px; height: 100px;" @click="onSubmit" size="medium" circle>签到</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+        var regExp = new RegExp("^1[3578]\\d{9}$");
+        var validatePhone = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!regExp.test(value)) {
+            callback(new Error('请输入正确对手机号'));
+          } else {
+          callback();
+        }
+      };
+            return {
+              form: {
+                  cpid: '',
+                  phone:''
+                },
+                rules: {
+                      phone: [
+                        { validator: validatePhone, trigger: 'blur' }
+                      ]
+                }
+            };
+        },
+        //初始化
+        mounted: function () {
+        var totalMoney = '[[${id}]]';
+        this.form.cpid = totalMoney;
+        },
+        methods: {
+        // 打卡
+        onSubmit() {
+        //拿到fromi表单数据 想后台进行提交 ajax
+          var addForm = this.form;
+          var regExpPhone = new RegExp("^1[3578]\\d{9}$");
+            var newthis = this;
+            if (addForm.phone == '') {
+            newthis.$message.error('手机号不能为空');
+            return
+            }
+            if(!regExpPhone.test(addForm.phone)) {
+            newthis.$message.error('请填写正确对手机号格式');
+            return
+            }
+            var d = {
+                'cpid': addForm.cpid,
+                'phone': addForm.phone,
+            };
+            var url = '/user/sign';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'text',
+                success: function (result) {
+                if (result == 2) {
+                    newthis.$message.error('您的手机号不再选手序列中');
+                }
+                    if (result == 1) {
+                    newthis.$notify({
+                      title: '您已打卡',
+                      message: '打卡成功',
+                      duration: 0
+                    });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+            console.log('submit!');
+            }
+        }
+    })
+</script>
+<!--<script src="/echarts.js"></script>-->
+</html>
