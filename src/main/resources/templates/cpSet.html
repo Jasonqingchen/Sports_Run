@@ -204,7 +204,7 @@
                                     prop="issignin"
                                     label="打卡情况"
                                     :filters="[{ text: '未签到', value: '未签到' }, { text: '已签到', value: '已签到' }]"
-                                    :filter-method=""
+                                    :filter-method="filterTag"
                                     filter-placement="bottom-end"
                                     width="150">
                                 <template slot-scope="scope">
@@ -310,7 +310,7 @@
         //被调用方法
         methods: {
         //标签方法
-        (value, row) {
+        filterTag(value,row) {
         return row.issignin === value;
         },
         //前台导出方法

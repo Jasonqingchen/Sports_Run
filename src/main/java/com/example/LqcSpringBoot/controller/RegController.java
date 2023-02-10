@@ -49,6 +49,7 @@ public class RegController {
                 su.setNumber("F"+number);
             }
             su.setStatus("未开始");
+            su.setIssignin("未签到");
             su.setId(UUID.randomUUID().toString().replace("-", ""));
             return stmapper.insert(su);
         }

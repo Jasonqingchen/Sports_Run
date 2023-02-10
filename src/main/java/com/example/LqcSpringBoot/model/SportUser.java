@@ -1,5 +1,6 @@
 package com.example.LqcSpringBoot.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import javax.persistence.Table;
@@ -29,6 +30,9 @@ public class SportUser implements Serializable {
     private String sumtime;
 
     private String issignin;
+
+    @TableField(exist = false)
+    private String sumti;
 
     private static final long serialVersionUID = 1L;
 }

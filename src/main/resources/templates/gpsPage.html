@@ -50,7 +50,7 @@
 
         </el-row><br>
         <div>
-            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="120px">
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="90px">
                 <el-form-item label="CPID" prop="cpid" style="display: none;">
                     <el-input v-model="form.cpid" autocomplete="off" id="cpid" style="display: none;" oninput="if(value.length>100)value=value.slice(0,100)"></el-input>
                 </el-form-item>

@@ -12,9 +12,10 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="sumtime" property="sumtime" jdbcType="VARCHAR" />
     <result column="issignin" property="issignin" jdbcType="VARCHAR" />
+    <result column="sumti" property="sumti" jdbcType="VARCHAR" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select name, sex, phone, bz, id,number,min,status,sumtime,issignin
+    select name, sex, phone, bz, id,number,min,status,sumtime,issignin,sumti
     from sport_user
   </select>
   <!--对手机号进行查重-->
@@ -35,7 +36,7 @@
   <!--所有选手进行排序-->
   <select id="selectByMap" resultMap="BaseResultMap">
     SELECT u.*,
-    IFNULL(MAX(g.sumtime), '-' ) sumtime
+    IFNULL(MAX(g.sumtime), '-' ) sumti
     FROM sport_user u LEFT JOIN
     sport_gps g ON g.phone = u.phone  where 1=1
     <if test = " phone != '' ">
