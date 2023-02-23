@@ -84,4 +84,14 @@ public class CpController {
         int i = scpMapper.updateById(sc);
         return String.valueOf(i);
     }
+
+    /**
+     * 设置新的开始时间
+     */
+    @RequestMapping("/uptime")
+    @ResponseBody
+    public String newTime(String time) {
+        int i = scpMapper.updateTime(time);
+        return String.valueOf(i);
+    }
 }

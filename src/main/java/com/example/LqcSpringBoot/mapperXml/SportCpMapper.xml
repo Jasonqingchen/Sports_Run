@@ -19,4 +19,7 @@
     select id, cpname, cpendtime, userid, bz, starttime, endtime,indexid,sumtime,gpstime,sw
     from sport_cp
   </select>
+  <update id="updateTime">
+    update sport_cp set starttime = #{time} where id is not null;
+  </update>
 </mapper>

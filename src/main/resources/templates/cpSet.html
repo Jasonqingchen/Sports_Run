@@ -126,6 +126,13 @@
                 </el-tab-pane>
                 <el-tab-pane label="CP点位二维码生成">
                     <span slot="label"><i class="el-icon-printer"></i> CP点位二维码生成</span>
+                        <el-date-picker
+                                v-model="input1"
+                                type="datetime"
+                                placeholder="选择比赛开始日期时间"
+                                value-format="yyyy-MM-dd HH:mm:ss">
+                        </el-date-picker>
+                    <el-button type="danger" @click="save()">保存</el-button>
                     <template>
                         <el-table
                                 :data="tableData"
@@ -133,7 +140,7 @@
                                 max-height="550">
                             <el-table-column
                                     prop="starttime"
-                                    label="比赛日期"
+                                    label="比赛开始时间"
                                     width="200">
                             </el-table-column>
                             <el-table-column
@@ -290,6 +297,7 @@
         el: '#app',
         data() {
             return {
+            input1: "",
             total: '',
             currentPage: 1,
             pageSize: 10,
@@ -317,6 +325,31 @@
         },
         //被调用方法
         methods: {
+        save() {
+        var newStartTime = this.input1;
+        var newthis = this;
+            //更新时间
+            var url = '/cp/uptime';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {time: newStartTime},
+                dataType: 'json',
+                success: function (result) {
+                if (result != '0') {
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        location.reload();
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
         //是否开启关门时间校验
         swit(index,row){
         if (row[index].sw=="1") {

@@ -14,4 +14,5 @@ import java.util.List;
  */
 @Mapper
 public interface SportCpMapper extends BaseMapper<SportCp> {
+    Integer updateTime(String time);//修改开始时间
 }
