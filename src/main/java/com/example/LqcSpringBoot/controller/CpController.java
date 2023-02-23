@@ -16,14 +16,15 @@ import java.util.Map;
 
 /**
  * 对cp点对维护类
+ *
  * @author liuqingchen
  * @date 2022/12/25 20:43
  */
 @Controller
 @RequestMapping("/cp")
 public class CpController {
-        @Autowired
-        public SportCpMapper scpMapper;
+    @Autowired
+    public SportCpMapper scpMapper;
 
     /**
      * 主界面（导航页）
@@ -46,31 +47,41 @@ public class CpController {
      */
     @RequestMapping("/cpset")
     @ResponseBody
-    public String cpSet(@RequestParam Map map){
+    public String cpSet(@RequestParam Map map) {
         List<SportCp> list = JSONObject.parseArray(map.get("list").toString(), SportCp.class);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        list.forEach(cp->{
-                cp.setStarttime(map.get("starttime").toString());//开始时间
-                cp.setEndtime(map.get("endtime").toString());//结束时间
-                cp.setCpendtime(cp.getCpendtime().toString());
-                cp.setId(UUID.randomUUID().toString().replace("-",""));
-                cp.setUserid("0");
-                if ("".equals(cp.getIndexid())) {
-                    cp.setIndexid("0");
-                }
-                scpMapper.insert(cp);
+        list.forEach(cp -> {
+            cp.setStarttime(map.get("starttime").toString());//开始时间
+            cp.setEndtime(map.get("endtime").toString());//结束时间
+            cp.setCpendtime(cp.getCpendtime().toString());
+            cp.setId(UUID.randomUUID().toString().replace("-", ""));
+            cp.setUserid("0");
+            if ("".equals(cp.getIndexid())) {
+                cp.setIndexid("0");
+            }
+            scpMapper.insert(cp);
         });
         return "1";
     }
 
     /**
      * 生成二维码列表 列表查询
+     *
      * @return
      */
     @RequestMapping("/cpselect")
     @ResponseBody
-    public List<SportCp> cpSelect () {
-            return  scpMapper.selectList(null);
+    public List<SportCp> cpSelect() {
+        return scpMapper.selectList(null);
     }
 
+    /**
+     * 是否开启关门不可打卡功能
+     */
+    @RequestMapping("/issw")
+    @ResponseBody
+    public String isTrueFalse(SportCp sc) {
+        int i = scpMapper.updateById(sc);
+        return String.valueOf(i);
+    }
 }

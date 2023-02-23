@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,13 +63,25 @@ public class GpsController {
     /**
      * 打卡
      *
-     * @return type 1：打卡成功 2.选手已经打卡 3.该选手不存在
+     * @return type 1：打卡成功 2.选手已经打卡 3.该选手不存在 4.选手被关门
      */
     @RequestMapping("/save")
     @ResponseBody
     public String gpsSet(@RequestParam Map map) throws Exception {
         String cpid = (String) map.get("cpid");
         String phone = (String) map.get("phone");
+        //判断该补给点是否有关门时间要求 无则继续 有则判断是否在规定时间内完成 没有在设定时间内完成则返回状态 4
+        SportCp sscp = scMapper.selectById(cpid);
+        if ("1".equals(sscp.getSw())) {
+            Date now = new Date(); // 创建一个Date对象，获取当前时间
+            String strDateFormat = "yyyy-MM-dd HH:mm:ss";
+            LocalDateTime localDateTime = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            String gpsdata = localDateTime.format(DateTimeFormatter.ofPattern(strDateFormat));
+            String s = this.min(gpsdata, sscp.getCpendtime());
+            if (Integer.valueOf(s)<0){
+                return "4";
+            }
+        }
         //先去用户表查询看是否已经注册
         List<SportUser> list1 = suMapper.selectByPhone(phone);
         if ("退赛".equals(list1.get(0).getStatus())) {

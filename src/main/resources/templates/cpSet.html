@@ -154,14 +154,23 @@
                             <el-table-column
                                     fixed="right"
                                     label="操作"
-                                    width="120">
+                                    width="420">
                                 <template slot-scope="scope">
                                     <el-button
                                             @click.native.prevent="clickRow(scope.$index, tableData)"
                                             type="text"
                                             size="small">
-                                        点击生成二维码
+                                        <span style="color:#EF535A">点击生成二维码</span>
                                     </el-button>
+                                        <el-switch
+                                                v-model="scope.row.sw"
+                                                active-value="1"
+                                                inactive-value="2"
+                                                @change="swit(scope.$index, tableData)"
+                                                active-text="可关门"
+                                                name="swithcvalue"
+                                                inactive-text="不关门">
+                                        </el-switch>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -276,7 +285,6 @@
 <script src="/js/excel.js"></script>
 <!--<script src="/vue/element-ui.min.js"></script>-->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<!--<script src="/echarts.js"></script>-->
 <script type="text/javascript">
     new Vue({
         el: '#app',
@@ -309,6 +317,36 @@
         },
         //被调用方法
         methods: {
+        //是否开启关门时间校验
+        swit(index,row){
+        if (row[index].sw=="1") {
+        row[index].sw="1";
+        } else {
+        row[index].sw="2";
+        }
+
+            var newthis = this;
+            //改补给点是否有关门时间
+            var url = '/cp/issw';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: row[index],
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
         //标签方法
         filterTag(value,row) {
         return row.issignin === value;
@@ -543,4 +581,5 @@ handleClose(done) {
         //------------------------------底部
     })
 </script>
+<!--<script src="/echarts.js"></script>-->
 </html>

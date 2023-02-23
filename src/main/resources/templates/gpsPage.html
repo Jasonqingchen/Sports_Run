@@ -129,6 +129,10 @@
                 if (result == 3) {
                 newthis.$message.error('您已经退赛 无法参与打卡');
                 }
+                if (result == 4) {
+                 newthis.$message.error("对不起 您已超时！");
+                return false;
+                }
                     if (result == 1) {
                         newthis.$message({
                             message: '打卡成功',
