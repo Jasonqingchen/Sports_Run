@@ -560,7 +560,7 @@ handleClose(done) {
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            var urls = "http://1.12.238.58:8666/gps/tz?id="+rows[index].id;
+            var urls = "http://liuqc.site/gps/tz?id="+rows[index].id;
             //console.log(urls);
 			var qrcode = new QRCode(document.getElementById("locatorQRCodeRef"),{
 				text: urls,
