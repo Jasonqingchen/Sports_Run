@@ -145,35 +145,23 @@ public class GpsController {
      *
      * @throws ParseException T1 开始时间， T2 当前时间
      */
-    public String calculateTimeDifferenceBySimpleDateFormat(String T1, String T2) throws ParseException {
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        /*天数差*/
-        Date fromDate1 = simpleFormat.parse(T1);
-        Date toDate1 = simpleFormat.parse(T2);
-        long from1 = fromDate1.getTime();
-        long to1 = toDate1.getTime();
-        int days = (int) ((to1 - from1) / (1000 * 60 * 60 * 24));
-        String t1 = String.valueOf(days);
-        //System.out.println("两个时间之间的天数差为：" + days);
+    public static String calculateTimeDifferenceBySimpleDateFormat(String T1, String T2) throws ParseException {
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T1);
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T2);
 
-        /*小时差*/
-        Date fromDate2 = simpleFormat.parse(T1);
-        Date toDate2 = simpleFormat.parse(T2);
-        long from2 = fromDate2.getTime();
-        long to2 = toDate2.getTime();
-        int hours = (int) ((to2 - from2) / (1000 * 60 * 60));
-        String t2 = String.valueOf(hours);
-        //System.out.println("两个时间之间的小时差为：" + hours);
+        // 相差的毫秒值
+        Long milliseconds = endDate.getTime() - startDate.getTime();
 
-        /*分钟差*/
-        Date fromDate3 = simpleFormat.parse(T1);
-        Date toDate3 = simpleFormat.parse(T2);
-        long from3 = fromDate3.getTime();
-        long to3 = toDate3.getTime();
-        int minutes = (int) ((to3 - from3) / (1000 * 60));
-        String t3 = String.valueOf(minutes);
-        //System.out.println("两个时间之间的分钟差为：" + minutes);
-        return minutes / 24 / 60 + "天" + minutes / 60 % 24 + "小时" + minutes % 60 + "分钟";
+        long nd = 1000 * 24 * 60 * 60;// 一天的毫秒数
+        long nh = 1000 * 60 * 60;// 一小时的毫秒数
+        long nm = 1000 * 60;// 一分钟的毫秒数
+        long ns = 1000;// 一秒钟的毫秒数
+
+        long day = milliseconds / nd; // 计算相差多少天
+        long hour = milliseconds % nd / nh; // 计算相差剩余多少小时
+        long min = milliseconds % nd % nh / nm; // 计算相差剩余多少分钟
+        long sec = milliseconds % nd % nh % nm / ns; // 计算相差剩余多少秒
+        return day + "/" + hour + "/" + min + "/" + sec + "/";
     }
 
     /**
@@ -182,34 +170,23 @@ public class GpsController {
      * @throws ParseException T1 开始时间， T2 当前时间
      */
     public String min(String T1, String T2) throws ParseException {
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        /*天数差*/
-        Date fromDate1 = simpleFormat.parse(T1);
-        Date toDate1 = simpleFormat.parse(T2);
-        long from1 = fromDate1.getTime();
-        long to1 = toDate1.getTime();
-        int days = (int) ((to1 - from1) / (1000 * 60 * 60 * 24));
-        String t1 = String.valueOf(days);
-        //System.out.println("两个时间之间的天数差为：" + days);
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T1);
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T2);
 
-        /*小时差*/
-        Date fromDate2 = simpleFormat.parse(T1);
-        Date toDate2 = simpleFormat.parse(T2);
-        long from2 = fromDate2.getTime();
-        long to2 = toDate2.getTime();
-        int hours = (int) ((to2 - from2) / (1000 * 60 * 60));
-        String t2 = String.valueOf(hours);
-        //System.out.println("两个时间之间的小时差为：" + hours);
+        // 相差的毫秒值
+        Long milliseconds = endDate.getTime() - startDate.getTime();
+        return String.valueOf(milliseconds/1000);
+    }
 
-        /*分钟差*/
-        Date fromDate3 = simpleFormat.parse(T1);
-        Date toDate3 = simpleFormat.parse(T2);
-        long from3 = fromDate3.getTime();
-        long to3 = toDate3.getTime();
-        int minutes = (int) ((to3 - from3) / (1000 * 60));
-        String t3 = String.valueOf(minutes);
-        //System.out.println("两个时间之间的分钟差为：" + minutes);
-        return t3;
+    public static void main(String[] args) throws ParseException {
+        String T1 = "2023-02-25 08:15:00";
+        String T2 = "2023-02-25 08:15:37";
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T1);
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T2);
+
+        // 相差的毫秒值
+        Long milliseconds = endDate.getTime() - startDate.getTime();
+        System.out.println(String.valueOf(milliseconds/1000));
     }
 
 }
