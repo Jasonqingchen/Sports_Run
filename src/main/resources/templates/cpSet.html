@@ -89,6 +89,11 @@
                                                     <el-input v-model="every.cpname"></el-input>
                                                 </el-form-item>
                                                 <el-form-item
+                                                        label="距离"
+                                                        :prop="'orFormList.' + index + '.cpkm'">
+                                                    <el-input v-model="every.cpkm"></el-input>
+                                                </el-form-item>
+                                                <el-form-item
                                                         class="compareClass"
                                                         label="关门时间"
                                                         :prop="'orFormList.' + index + '.cpendtime'">
@@ -313,7 +318,8 @@
           {
             cpname: "",
             cpendtime: "",
-            indexid:''
+            indexid:'',
+            cpkm:''
           },
         ],
       },

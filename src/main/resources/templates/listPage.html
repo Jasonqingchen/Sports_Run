@@ -179,12 +179,14 @@
                             <th scope="col">补给点</th>
                             <th scope="col">打卡时间</th>
                             <th scope="col">关门时间</th>
+                            <th scope="col">距离</th>
                             <th scope="col">总用时</th>
                         </tr>
                             <tr v-for="(items,index) in tableData">
                                 <td class="row" style="text-align:left;">{{items.cpname}}</td>
                                 <td class="row" style="text-align:left;">{{items.gpstime}}</td>
                                 <td class="row" style="text-align:left;">{{items.cpendtime}}</td>
+                                <td class="row" style="text-align:left;">{{items.cpkm}}</td>
                                 <td class="row" style="text-align:left;">{{items.sumtime}}</td>
                             </tr>
                     </table>

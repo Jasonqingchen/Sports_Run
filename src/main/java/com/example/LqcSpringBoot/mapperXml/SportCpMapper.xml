@@ -14,9 +14,10 @@
     <result column="gpstime" jdbcType="VARCHAR" property="gpstime" />
     <result column="sumtime" jdbcType="VARCHAR" property="sumtime" />
     <result column="sw" jdbcType="VARCHAR" property="sw" />
+    <result column="cpkm" jdbcType="VARCHAR" property="cpkm" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, cpname, cpendtime, userid, bz, starttime, endtime,indexid,sumtime,gpstime,sw
+    select id, cpname, cpendtime, userid, bz, starttime, endtime,indexid,sumtime,gpstime,sw,cpkm
     from sport_cp
   </select>
   <update id="updateTime">
