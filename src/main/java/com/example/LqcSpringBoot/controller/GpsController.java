@@ -161,7 +161,9 @@ public class GpsController {
         long hour = milliseconds % nd / nh; // 计算相差剩余多少小时
         long min = milliseconds % nd % nh / nm; // 计算相差剩余多少分钟
         long sec = milliseconds % nd % nh % nm / ns; // 计算相差剩余多少秒
-        return day + "/" + hour + "/" + min + "/" + sec + "/";
+        getTimeString(milliseconds);
+        //return hour + ":" + min + ":" + sec + ":";
+        return getTimeString(milliseconds);
     }
 
     /**
@@ -178,15 +180,50 @@ public class GpsController {
         return String.valueOf(milliseconds/1000);
     }
 
-    public static void main(String[] args) throws ParseException {
-        String T1 = "2023-02-25 08:15:00";
-        String T2 = "2023-02-25 08:15:37";
-        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T1);
-        Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(T2);
-
-        // 相差的毫秒值
-        Long milliseconds = endDate.getTime() - startDate.getTime();
-        System.out.println(String.valueOf(milliseconds/1000));
+    /**
+     * 把时间戳转换为：时分秒
+     *
+     * @param millisecond ：毫秒，传入单位为毫秒
+     */
+    public static String getTimeString(final long millisecond) {
+        if (millisecond < 1000) {
+            return "0" + "";
+        }
+        long second = millisecond / 1000;
+        long seconds = second % 60;
+        long minutes = second / 60;
+        long hours = 0;
+        if (minutes >= 60) {
+            hours = minutes / 60;
+            minutes = minutes % 60;
+        }
+        String timeString = "";
+        String secondString = "";
+        String minuteString = "";
+        String hourString = "";
+        if (seconds < 10) {
+            secondString = "0" + seconds;
+        } else {
+            secondString = seconds + "";
+        }
+        if (minutes < 10 && hours < 1) {
+            minuteString = minutes + ":";
+        } else if (minutes < 10){
+            minuteString =  "0" + minutes + ":";
+        } else {
+            minuteString = minutes + ":";
+        }
+        if (hours < 10) {
+            hourString = hours + ":";
+        } else {
+            hourString = hours + "" + ":";
+        }
+        if (hours != 0) {
+            timeString = hourString + minuteString + secondString;
+        } else {
+            timeString = minuteString + secondString;
+        }
+        return timeString;
     }
 
 }
