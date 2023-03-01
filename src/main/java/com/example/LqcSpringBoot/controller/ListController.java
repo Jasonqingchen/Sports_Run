@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -22,6 +26,9 @@ import java.util.Map;
 @RequestMapping("/list")
 @Controller
 public class ListController {
+
+    public Double  pskm =0.00;//总里程
+    public String sumtime;//总时间
     @Autowired
     public SportCpMapper scMapper;
     @Autowired
@@ -78,7 +85,6 @@ public class ListController {
     @RequestMapping("/seachUser")
     @ResponseBody
     public List  seachUser (@RequestParam Map map) {
-
         List<SportGps> sg = sgMapper.selectByPhones(map.get("phone").toString());
             List<SportCp> sportCps = scMapper.selectList(null);
             sportCps.forEach(sportCp ->{
@@ -86,9 +92,29 @@ public class ListController {
                     if (sportCp.getId().equals(sportSg.getCpid())) {
                         sportCp.setGpstime(sportSg.getGpstime());
                         sportCp.setSumtime(sportSg.getSumtime());
+                        sumtime = sportSg.getSumtime();
                     }
                 });
+                if  (sportCp.getSumtime()!=null) {
+                    pskm += Double.parseDouble(sportCp.getCpkm().trim());
+                    //将已经打卡的cp点设置成为
+                    String[] my =sumtime.split(":");
+                    int hour =Integer.parseInt(my[0]);
+                    int min =Integer.parseInt(my[1]);
+                    int sec =Integer.parseInt(my[2]);
+                    int zong =hour*3600+min*60+sec;
+                    int ps = (int) (zong / pskm);
+                    int mm = (ps % 3600) / 60;
+                    int ss = (ps % 3600) % 60;
+                    String  pps = mm + "'" + ss;
+                    sportCp.setBz(pps);
+                    sportCp.setJl(String.valueOf(pskm)+"km");
+                } else {
+                    sportCp.setBz("-");
+                }
+
             });
-            return sportCps;
+        pskm=0.0;
+        return sportCps;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.LqcSpringBoot.model;
 
 import cn.hutool.core.date.DateTime;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import javax.persistence.Table;
@@ -33,6 +34,9 @@ public class SportCp implements Serializable {
     private String sw;
 
     private String cpkm;
+
+    @TableField(exist = false)
+    private String jl;
 
     private static final long serialVersionUID = 1L;
 }
