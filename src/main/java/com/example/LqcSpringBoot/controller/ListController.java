@@ -60,7 +60,7 @@ public class ListController {
         } else {
             name = map.get("tj").toString();
         }
-        List list = suMapper.selectByMap(phone,map.get("sex").toString(),name);
+        List list = suMapper.selectByMap(phone,map.get("sex").toString(),name,map.get("groupzb").toString());
             return list;
     }
     /**

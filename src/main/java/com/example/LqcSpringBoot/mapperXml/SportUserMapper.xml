@@ -48,6 +48,10 @@
     <if test = " name != '' ">
       and u.name like concat('%',#{name},'%')
     </if>
+    <if test = " groupzb != '' ">
+      and u.groupzb =#{groupzb}
+    </if>
+
     GROUP BY u.name
     order by u.bz desc
   </select>

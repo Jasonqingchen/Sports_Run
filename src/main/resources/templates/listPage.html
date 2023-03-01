@@ -29,7 +29,7 @@
     .znfuqi{width:100%; margin:0px auto; text-align:center; position:absolute; z-index:99;}
     .znfanhuisy{ display:none !important;}
         .bgimg {
-        background:url("/imgs/head.jpeg");
+        background:url("/imgs/lghead.jpg");
         position: relative;
         margin:0px auto;
         width: 100%;
@@ -37,7 +37,7 @@
   }
 
   #mytable {
-        width:30%;margin:0px auto; text-align:center; position: relative;
+        width:90%;margin:0px auto; text-align:center; position: relative;
     }
     .row {
         width: 350px;
@@ -48,26 +48,21 @@
     caption {
         padding: 0 0 5px 0;
         width: 350px;
-        font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        font: italic 9px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
         text-align: left;
     }
 
     th {
         font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
         color: #4f6b72;
-        border-right: 1px solid #C1DAD7;
-        border-bottom: 1px solid #C1DAD7;
-        border-top: 1px solid #C1DAD7;
         letter-spacing: 2px;
         text-transform: uppercase;
         text-align: left;
         padding: 6px 6px 6px 12px;
-        background: #CAE8EA  no-repeat;
+        background: #ffffff  no-repeat;
     }
 
     td {
-        border-right: 1px solid #C1DAD7;
-        border-bottom: 1px solid #C1DAD7;
         background: #fff;
         font-size:11px;
         padding: 6px 6px 6px 12px;
@@ -108,19 +103,47 @@
             <!--查询表单-->
             <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
                 <div style="text-align: left;">
-                    <el-form-item  label="条件" prop="tj" style="width: 400px;">
+                    <!--<el-form-item  label="" prop="tj" style="width: 400px;">
                         <el-input v-model="form.tj" autocomplete="off" placeholder="输入姓名或手机号"></el-input>
+                    </el-form-item>-->
+                    <el-form-item  label="" prop="tj" style="width: 400px;">
+                        <el-input placeholder="输入姓名或手机号" v-model="form.tj" class="input-with-select" clearable>
+                            <el-button slot="append" icon="el-icon-search" @click="userList"></el-button>
+                        </el-input>
                     </el-form-item>
-                    <el-form-item label="性别" prop="sex" style="width: 400px;">
+                    <el-row style="width: 700px;">
+                        <el-col :span="7">
+                            <el-form-item label="" style="width: 180px;">
+                                <el-select v-model="form.groupzb" clearable placeholder="请选择组别" @change="partTypesChanged">
+                                    <el-option label="30公里" value="30公里"></el-option>
+                                    <el-option label="50公里" value="50公里"></el-option>
+                                    <el-option label="100公里" value="100公里"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>&nbsp;&nbsp;
+                        <el-col :span="7">
+                            <el-form-item label="" style="width: 180px;">
+                                <el-select v-model="form.sex" clearable placeholder="请选择性别" @change="partTypesChanged">
+                                    <el-option label="男" value="男"></el-option>
+                                    <el-option label="女" value="女"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <!--<el-button @click="resetForm('form')" type="danger" size="">重置</el-button>-->
+                        </el-col>
+                    </el-row>
+
+
+                    <!--<el-form-item label="性别" prop="sex" style="width: 400px;">
                         <el-radio-group v-model="form.sex">
                             <el-radio label="男"></el-radio>
                             <el-radio label="女"></el-radio>
                         </el-radio-group>&nbsp;&nbsp;&nbsp;
-                        <el-button  @click="userList" style="background-color:#12861C;color:#FFF" size="mini">查询</el-button>
+                        <el-button  @click="userList" style="background-color:#12861C;color:#FFF" size="mini">搜索</el-button>
                         <el-button @click="resetForm('form')" type="danger" size="mini">重置</el-button>
-                    </el-form-item>
+                    </el-form-item>-->
                     <el-form-item>
-
                     </el-form-item>
                 </div>
 
@@ -220,7 +243,8 @@
             tableData:[],
               form: {
                   tj:'',
-                  sex:''
+                  sex:'',
+                  groupzb:''
                 },
                 rules: {
                       phone: [
@@ -235,6 +259,9 @@
         this.userList();
         },
         methods: {
+        partTypesChanged(){
+        this.userList();
+        },
         //重置页面内容并查询页面
          resetForm(form) {
             this.$refs[form].resetFields();
@@ -246,7 +273,8 @@
         var addForm = newthis.form;
             var d = {
                     'tj': addForm.tj,
-                    'sex': addForm.sex
+                    'sex': addForm.sex,
+                    'groupzb': addForm.groupzb
                 };
             var url = '/list/seach';
             $.ajax({
