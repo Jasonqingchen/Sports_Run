@@ -47,7 +47,7 @@ public class KmController {
         SportKm sk  = new SportKm();
         sk.setName(name);
         sk.setLabel(name);
-        sk.setValue(name);
+        sk.setValu(name);
         sk.setId(UUID.randomUUID().toString());
         return skmapper.insert(sk);
     }
@@ -63,7 +63,7 @@ public class KmController {
         sportKm.forEach(sk->{
             Map map = new HashMap();
             map.put("label",sk.getLabel());
-            map.put("value",sk.getValue());
+            map.put("value",sk.getValu());
             list.add(map);
         });
         return list;

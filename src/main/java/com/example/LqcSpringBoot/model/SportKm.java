@@ -12,7 +12,7 @@ public class SportKm implements Serializable {
 
     private String name;
 
-    private String value;
+    private String valu;
 
     private String label;
 
