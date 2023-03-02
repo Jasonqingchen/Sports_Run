@@ -303,7 +303,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="name"
-                                    label="姓名"
+                                    label="组别名称"
                                     width="120">
                             </el-table-column>
                             <el-table-column
@@ -647,7 +647,7 @@ handleClose(done) {
       kmlist() {
       var newthis = this;
       //请求后台
-            var url = '/km/list';
+            var url = '/km/newlist';
             $.ajax({
                 type: 'POST',
                 url: url,

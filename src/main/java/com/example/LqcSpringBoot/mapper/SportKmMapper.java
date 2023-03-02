@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.LqcSpringBoot.model.SportKm;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.*;
+
 
 /**
  * @author liuqingchen

@@ -115,9 +115,12 @@
                         <el-col :span="7">
                             <el-form-item label="" style="width: 180px;">
                                 <el-select v-model="form.groupzb" clearable placeholder="请选择组别" @change="partTypesChanged">
-                                    <el-option label="30公里" value="30公里"></el-option>
-                                    <el-option label="50公里" value="50公里"></el-option>
-                                    <el-option label="100公里" value="100公里"></el-option>
+                                    <el-option
+                                            v-for="item in kmoptions"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>&nbsp;&nbsp;
@@ -241,6 +244,7 @@
             activeNames:'',//折叠参数传递值
             oudlist: [],
             tableData:[],
+            kmoptions:[],//动态组别 数据源是查询来的
               form: {
                   tj:'',
                   sex:'',
@@ -257,8 +261,27 @@
         mounted: function () {
         this.tableData = [{cpname:'-',gpstime:'-',sumtime:'-',bz:'-'}];
         this.userList();
+        this.kmList();
         },
         methods: {
+        //里程初始查询
+        kmList(){
+        var newthis = this;
+        var url = '/km/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.kmoptions=result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
         partTypesChanged(){
         this.userList();
         },

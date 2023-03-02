@@ -4,13 +4,15 @@
   <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.SportKm" >
     <result column="id" property="id" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="label" property="label" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
   </resultMap>
   <insert id="insert" parameterType="com.example.LqcSpringBoot.model.SportKm" >
-    insert into sport_km (id, name)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+    insert into sport_km (id, name,label,value)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}), #{label,jdbcType=VARCHAR}), #{value,jdbcType=VARCHAR})
   </insert>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name
+    select id, name,label,value
     from sport_km
   </select>
 </mapper>

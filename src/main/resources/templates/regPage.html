@@ -52,7 +52,8 @@
         <div>
             <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px" style="text-align: left;">
                 <el-form-item label="姓名" prop="name" style="width: 400px;">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.name" maxlength="10"
+                              show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="phone" style="width: 400px;">
                     <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -64,18 +65,16 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="组别" style="width: 400px;">
-                    <el-radio-group v-model="form.groupzb" style="width: 400px;">
-                        <el-radio label="30公里"></el-radio>
-                        <el-radio label="35公里"></el-radio>
-                        <el-radio label="40公里"></el-radio><br>
-                        <el-radio label="50公里"></el-radio>
-                        <el-radio label="60公里"></el-radio>
-                        <el-radio label="100公里"></el-radio>
+                    <el-radio-group v-model="form.groupzb" size="medium" style="width: 400px;">
+                        <el-radio-button v-for="item in kmoptions"
+                                         :key="item.value"
+                                         :label="item.label"
+                                         :value="item.value"></el-radio-button>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="备注" style="width: 400px;">
+                <!--<el-form-item label="备注" style="width: 400px;">
                     <el-input type="textarea" v-model="form.bz"></el-input>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item>
                     <el-button type="" @click="onSubmit" round>立即注册</el-button>
                 </el-form-item>
@@ -103,6 +102,7 @@
         }
       };
             return {
+            kmoptions:[],//动态组别 数据源是查询来的
               form: {
                   name: '',
                   bz: '',
@@ -119,8 +119,27 @@
         },
         //初始化
         mounted: function () {
+        this.kmList();
         },
         methods: {
+        //里程初始查询
+        kmList(){
+        var newthis = this;
+        var url = '/km/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.kmoptions=result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
         //提交from 进行注册
         onSubmit() {
         //拿到fromi表单数据 想后台进行提交 ajax
