@@ -284,10 +284,53 @@
                     </el-row>
 
                 </el-tab-pane>
-                <!--<el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>-->
+                <el-tab-pane label="组别设置">
+                    <span slot="label"><i class="el-icon-s-data"></i> 组别设置</span>
+                    <el-row style="text-align: right;">
+                        <el-button type="text" @click="dialogFormVisible = true">新增组别</el-button>
+                    </el-row><br><br>
+
+                    <template>
+                        <el-table
+                                :data="KmTableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    fixed
+                                    prop="id"
+                                    label="ID"
+                                    width="200">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="name"
+                                    label="姓名"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="400">
+                                <template slot-scope="scope">
+                                    <el-button @click="kmhandleClick(scope.row)" type="text" size="small">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-tab-pane>
             </el-tabs>
         </el-card>
     </div>
+    <el-dialog title="新增组别" :visible.sync="dialogFormVisible">
+        <el-form :model="kmForm">
+            <el-form-item label="组别" width="120px">
+                <el-input v-model="kmForm.name" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addKm()">新 增</el-button>
+        </div>
+    </el-dialog>
 </div>
 </body>
 <script src="/vue/jquery.min.js"></script>
@@ -306,9 +349,14 @@
             total: '',
             currentPage: 1,
             pageSize: 10,
+            dialogFormVisible: false,
             dialogVisible: false,
+            KmTableData:[],//data table
             tableData:[],//data table
             UsertableData:[],//user data
+            kmForm:{
+                name:""
+            },
             search: '',
              //定义表单项
  orRuleForm: {
@@ -331,6 +379,63 @@
         },
         //被调用方法
         methods: {
+        //新增里程
+        addKm(){
+        var from = this.kmForm;
+            var newthis = this;
+            if (from.name ==='') {
+           newthis.$message.error('里程为空 请填写里程距离');
+            return;
+            }
+            //新增
+            var url = '/km/add';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {name:from.name},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.dialogFormVisible = false;
+                from.name = "";
+                newthis.kmlist();
+                newthis.$message({
+                            message: '新增成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        // 里程删除
+        kmhandleClick(row){
+        var newthis = this;
+            //单行删除
+            var url = '/km/del';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.kmlist();
+                newthis.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
         save() {
         var newStartTime = this.input1;
         var newthis = this;
@@ -531,10 +636,30 @@ handleClose(done) {
                     return false;
                 }
             });
-    } else if (tab.index=='2') {
-    newthis.listUser();
-    }
+        } else if (tab.index=='2') {
+        newthis.listUser();
+        } else if (tab.index=='3') {
+        newthis.kmlist();
+        }
         //console.log(tab, event);
+      },
+      //里程列表
+      kmlist() {
+      var newthis = this;
+      //请求后台
+            var url = '/km/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.KmTableData=result
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
       },
       //用户列表
       listUser () {
