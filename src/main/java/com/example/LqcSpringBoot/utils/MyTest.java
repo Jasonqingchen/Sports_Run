@@ -18,24 +18,7 @@ import java.util.TreeMap;
  * 登陆方式 13488604286  选用验证码登陆
  */
 public class MyTest {
-    public static void main(String[] args) throws ParseException {
 
-        String phone = "13488604286";
-        String nameandscor = "|"+"文静的滑降绳"+"|"+"50KM"+"|"+"33h:22m:59s";
-        //时间戳
-        long timestamp = System.currentTimeMillis();
-        System.out.println(timestamp);
-        //url
-        String url = "http://www.lokapi.cn/smsUTF8.aspx";
-
-        //签名，在发送时使用md5加密
-        String beforSign = "action=sendtemplate&username=13488604286&password="+getMD5String("13488604286")+"&token=c46bf88b&timestamp="+timestamp;
-        //参数串
-        String postData = "action=sendtemplate&username=13488604286&password="+getMD5String("13488604286")+"&token=c46bf88b&templateid=BA8DA31B&param="+phone+nameandscor+"&rece=json&timestamp="+timestamp+"&sign="+getMD5String(beforSign);
-        //调用其提供的发送短信方法
-        String result = sendPost(url,postData);
-        System.out.println(result);
-    }
     //发送短信的方法
     public static String sendPost(String url, String param) {
         PrintWriter out = null;

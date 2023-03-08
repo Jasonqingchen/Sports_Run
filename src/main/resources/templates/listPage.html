@@ -21,12 +21,10 @@
     body,*{margin:0;padding:0;text-decoration:none; border:0;list-style-type: none;}
     body{ margin:0px;font-family: "微软雅黑","宋体",Arial;background-color:#ffffff;line-height:1.8;font-size:14px;}
     input[type="submit"],input[type="reset"],input[type="button"],button { -webkit-appearance: none; }
-    .wrappers{width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
+    .wrappers{background-color: #f5f7fa;width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
     @media screen and (min-width: 1200px) {
         .wrappers{max-width:640px; }
     }
-    /*img{ max-width:100%; height:auto; max-width:100% !important; height:auto !important;}*/
-    .znfuqi{width:100%; margin:0px auto; text-align:center; position:absolute; z-index:99;}
     .znfanhuisy{ display:none !important;}
         .bgimg {
         background:url("/imgs/lghead.jpg");
@@ -89,6 +87,8 @@
         font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
         color: #797268;
     }
+
+
 </style>
 <body class="">
 <!--html代码 -->
@@ -97,16 +97,19 @@
         <div class="divhead">
             <el-row>
                 <!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
-                <el-col :span="24"><div class="bgimg"></div></el-col>
+                <el-col :span="24">
+                    <div class="bgimg"></div>
+                </el-col>
 
-            </el-row><br>
+            </el-row>
+            <br>
             <!--查询表单-->
             <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
                 <div style="text-align: left;">
                     <!--<el-form-item  label="" prop="tj" style="width: 400px;">
                         <el-input v-model="form.tj" autocomplete="off" placeholder="输入姓名或手机号"></el-input>
                     </el-form-item>-->
-                    <el-form-item  label="" prop="tj" style="width: 400px;">
+                    <el-form-item label="" prop="tj" style="width: 400px;">
                         <el-input placeholder="输入姓名或手机号" v-model="form.tj" class="input-with-select" clearable>
                             <el-button slot="append" icon="el-icon-search" @click="userList"></el-button>
                         </el-input>
@@ -114,7 +117,8 @@
                     <el-row style="width: 700px;">
                         <el-col :span="7">
                             <el-form-item label="" style="width: 180px;">
-                                <el-select v-model="form.groupzb" clearable placeholder="请选择组别" @change="partTypesChanged">
+                                <el-select v-model="form.groupzb" clearable placeholder="请选择组别"
+                                           @change="partTypesChanged">
                                     <el-option
                                             v-for="item in kmoptions"
                                             :key="item.value"
@@ -126,7 +130,8 @@
                         </el-col>&nbsp;&nbsp;
                         <el-col :span="7">
                             <el-form-item label="" style="width: 180px;">
-                                <el-select v-model="form.sex" clearable placeholder="请选择性别" @change="partTypesChanged">
+                                <el-select v-model="form.sex" clearable placeholder="请选择性别"
+                                           @change="partTypesChanged">
                                     <el-option label="男" value="男"></el-option>
                                     <el-option label="女" value="女"></el-option>
                                 </el-select>
@@ -151,13 +156,14 @@
                 </div>
 
             </el-form>
-        </div><br><br><br><br><br><br><br><br><br>
+        </div>
+        <br><br><br><br><br><br><br><br><br>
 
         <div id="tab" style="color: red;"></div>
         <!--循环列表-->
         <div v-for="(user,index) in oudlist">
-        <el-collapse v-model="activeNames" @change="handleChange" accordion>
-                <el-collapse-item :name="user.phone" >
+            <el-collapse v-model="activeNames" @change="handleChange" accordion>
+                <el-collapse-item :name="user.phone">
                     <template slot="title">
                         &nbsp;&nbsp;&nbsp;&nbsp;<el-tag
                             type="danger"
@@ -166,23 +172,25 @@
                     </el-tag>&nbsp;&nbsp;&nbsp;
                         <table>
                             <tr>
-                                <span  style="text-align: left; width:150px;">{{user.name}}</span>&nbsp;&nbsp;&nbsp;
-                                <span  style="text-align: left;width:20px;">{{user.number}}</span>&nbsp;&nbsp;
-                                <span  style="text-align: right; width:70px;">{{user.groupzb}}</span>&nbsp;<br><br>
-                            </tr><br><br>
-                                <template v-if="user.status==='比赛中'">
-                                    <span style="text-align: left;color:#FFB100;width:30px;">{{user.status}}</span>
-                                </template>
-                                <template v-if="user.status==='未开始'">
-                                    <span style="text-align: left;color:#676767;width:30px;">{{user.status}}</span>
-                                </template>
-                                <template v-if="user.status==='完赛'">
-                                    <span style="text-align: left;color:#007D39;width:30px;">{{user.status}}</span>
-                                </template>
-                                <template v-if="user.status==='退赛'">
-                                    <span style="text-align: left;color:#830000;width:30px;">{{user.status}}</span>
-                                </template><br>
-                                <!--<span style="text-align: left;color:#676767;width:100px;">{{user.sumti}}</span>-->
+                                <span style="text-align: left; width:150px;">{{user.name}}</span>&nbsp;&nbsp;&nbsp;
+                                <span style="text-align: left;width:20px;">{{user.number}}</span>&nbsp;&nbsp;
+                                <span style="text-align: right; width:70px;">{{user.groupzb}}</span>&nbsp;<br><br>
+                            </tr>
+                            <br><br>
+                            <template v-if="user.status==='比赛中'">
+                                <span style="text-align: left;color:#FFB100;width:30px;">{{user.status}}</span>
+                            </template>
+                            <template v-if="user.status==='未开始'">
+                                <span style="text-align: left;color:#676767;width:30px;">{{user.status}}</span>
+                            </template>
+                            <template v-if="user.status==='完赛'">
+                                <span style="text-align: left;color:#007D39;width:30px;">{{user.status}}</span>
+                            </template>
+                            <template v-if="user.status==='退赛'">
+                                <span style="text-align: left;color:#830000;width:30px;">{{user.status}}</span>
+                            </template>
+                            <br>
+                            <!--<span style="text-align: left;color:#676767;width:100px;">{{user.sumti}}</span>-->
                         </table>
                         <!--
 
@@ -194,7 +202,7 @@
                         <i class="el-icon-user-solid" style="color: #FF0000;"></i>
                         </span>-->
 
-                        </template>
+                    </template>
 
                     </template>
 
@@ -208,20 +216,20 @@
                             <th scope="col">总用时</th>
                             <th scope="col">已完成</th>
                         </tr>
-                            <tr v-for="(items,index) in tableData">
-                                <td class="row" style="text-align:left;">{{items.cpname}}</td>
-                                <td class="row" style="text-align:left;">{{items.gpstime}}</td>
-                                <td class="row" style="text-align:left;">{{items.cpendtime}}</td>
-                                <td class="row" style="text-align:left;">{{items.cpkm}}</td>
-                                <td class="row" style="text-align:left;">{{items.bz}}</td>
-                                <td class="row" style="text-align:left;">{{items.sumtime}}</td>
-                                <td class="row" style="text-align:left;">{{items.jl}}</td>
-                            </tr>
+                        <tr v-for="(items,index) in tableData">
+                            <td class="row" style="text-align:left;">{{items.cpname}}</td>
+                            <td class="row" style="text-align:left;">{{items.gpstime}}</td>
+                            <td class="row" style="text-align:left;">{{items.cpendtime}}</td>
+                            <td class="row" style="text-align:left;">{{items.cpkm}}</td>
+                            <td class="row" style="text-align:left;">{{items.bz}}</td>
+                            <td class="row" style="text-align:left;">{{items.sumtime}}</td>
+                            <td class="row" style="text-align:left;">{{items.jl}}</td>
+                        </tr>
                     </table>
                 </el-collapse-item>
-        </el-collapse>
-            </div>
+            </el-collapse>
         </div>
+    </div>
 </div>
 </body>
 <script src="/vue/jquery.min.js"></script>
@@ -387,6 +395,8 @@
             }
         }
     })
+
+
 </script>
 <script src="/vue/element-ui.min.js"></script>
 <!--<script src="/echarts.js"></script>-->

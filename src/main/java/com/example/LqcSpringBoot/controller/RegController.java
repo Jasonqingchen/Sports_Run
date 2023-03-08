@@ -2,6 +2,10 @@ package com.example.LqcSpringBoot.controller;
 
 import com.example.LqcSpringBoot.mapper.SportuserMapper;
 import com.example.LqcSpringBoot.model.SportUser;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.sun.javafx.collections.MappingChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
+import java.util.*;
 
 /**
  * user 注册相关业务类
@@ -52,6 +57,24 @@ public class RegController {
             su.setIssignin("未签到");
             su.setId(UUID.randomUUID().toString().replace("-", ""));
             return stmapper.insert(su);
+        }
+    }
+
+    /**
+     * 百度热搜
+     *
+     */
+    @RequestMapping("/baidu")
+    @ResponseBody
+    public String parseArgs(){
+        Unirest.setTimeouts(0, 0);
+        try {
+            HttpResponse<String> response = Unirest.get("http://api.1314.cool/getbaiduhot")
+                    .asString();
+            String body = response.getBody();
+            return body;
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
         }
     }
 }

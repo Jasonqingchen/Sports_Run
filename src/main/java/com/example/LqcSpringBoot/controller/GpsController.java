@@ -7,6 +7,7 @@ import com.example.LqcSpringBoot.mapper.SportuserMapper;
 import com.example.LqcSpringBoot.model.SportCp;
 import com.example.LqcSpringBoot.model.SportGps;
 import com.example.LqcSpringBoot.model.SportUser;
+import com.example.LqcSpringBoot.utils.MyTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +26,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.LqcSpringBoot.utils.MyTest.getMD5String;
+import static com.example.LqcSpringBoot.utils.MyTest.sendPost;
 
 /**
  * this is the controller  user gps
@@ -123,6 +127,12 @@ public class GpsController {
                     SportCp sportCp1 = scMapper.selectById(cpid);
                     if (String.valueOf(integer).equals(sportCp1.getIndexid())) {
                         ite.setStatus("完赛");
+                        //调用短信接口 向该选手发送模版短信
+                        /*try {
+                            this.xsSend(ite.getPhone(),ite.getName(),ite.getGroupzb(),ite.getSumtime());
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }*/
                     } else {
                         ite.setStatus("比赛中");
                     }
@@ -226,4 +236,29 @@ public class GpsController {
         return timeString;
     }
 
+    /**
+     * 发送短信接口  send message to 选手
+     * @param phone
+     * @param name
+     * @param km
+     * @param endtime
+     * @throws ParseException
+     */
+    public void xsSend(String phone,String name,String km,String endtime) throws ParseException {
+
+        String nameandscor = "|"+name+"|"+km+"|"+endtime;
+        //时间戳
+        long timestamp = System.currentTimeMillis();
+        System.out.println(timestamp);
+        //url
+        String url = "http://www.lokapi.cn/smsUTF8.aspx";
+
+        //签名，在发送时使用md5加密
+        String beforSign = "action=sendtemplate&username=13488604286&password="+getMD5String("13488604286")+"&token=c46bf88b&timestamp="+timestamp;
+        //参数串
+        String postData = "action=sendtemplate&username=13488604286&password="+getMD5String("13488604286")+"&token=c46bf88b&templateid=BA8DA31B&param="+phone+nameandscor+"&rece=json&timestamp="+timestamp+"&sign="+getMD5String(beforSign);
+        //调用其提供的发送短信方法
+          String result = sendPost(url,postData);
+        // System.out.println(result);
+    }
 }
