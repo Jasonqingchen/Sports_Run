@@ -37,6 +37,16 @@
                 .d{
                 background:url("/imgs/d.jpg")
                 }
+                .el-carousel__item img {
+                }
+
+              .el-carousel__item:nth-child(2n) {
+                background-color: #99a9bf;
+              }
+
+              .el-carousel__item:nth-child(2n+1) {
+                background-color: #d3dce6;
+              }
 </style>
 <body class="bgimg" style="text-align:center;">
 <!--html代码 -->
@@ -44,10 +54,20 @@
     <div class="wrappers">
         <div style="text-align: center;">
            <!-- <img src="/imgs/aebss.jpeg" style="width: 80%; height: 300px;">-->
+            <template>
+                <el-carousel :interval="4000" type="card" height="">
+                    <el-carousel-item>
+                        <img src="/imgs/1.jpeg">
+                    </el-carousel-item>
+                    <el-carousel-item>
+                        <img src="/imgs/2.jpeg">
+                    </el-carousel-item>
+                    <el-carousel-item>
+                        <img src="/imgs/3.jpg">
+                    </el-carousel-item>
+                </el-carousel>
+            </template>
         </div>
-<!--        <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">-->
-<!--        </div><br>-->
-<!--        <span id="ename"></span><br><br><br><br>-->
         <el-card class="box-card" >
 
             <el-tabs type="border-card" @tab-click="handleClick">
@@ -131,13 +151,16 @@
                 </el-tab-pane>
                 <el-tab-pane label="CP点位二维码生成">
                     <span slot="label"><i class="el-icon-printer"></i> CP点位二维码生成</span>
+                    <el-row>
                         <el-date-picker
                                 v-model="input1"
                                 type="datetime"
                                 placeholder="选择比赛开始日期时间"
                                 value-format="yyyy-MM-dd HH:mm:ss">
                         </el-date-picker>
-                    <el-button type="danger" @click="save()">保存</el-button>
+                    <el-button type="success" @click="save()">保存</el-button>
+                    <el-button type="danger" plain icon="el-icon-delete" @click="delcp()">清除所有CP点位</el-button>
+                    </el-row><br><br>
                     <template>
                         <el-table
                                 :data="tableData"
@@ -446,6 +469,36 @@
                 }
             });
         },
+        //清除所有的CP点
+        delcp(){
+        var newthis = this;
+        var url = '/cp/delcpall';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                if (result != '0') {
+                    newthis.$message({
+                                message: '清除成功',
+                                type: 'success'
+                            });
+                            newthis.cpbujd();
+                    } else {
+                    newthis.$message({
+                                message: '无数据',
+                                type: 'success'
+                            });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
+
         save() {
         var newStartTime = this.input1;
         var newthis = this;
@@ -626,13 +679,10 @@ handleClose(done) {
     fh () {
     location.href="/cp/tz";
     },
-    //标题栏点击事件
-    handleClick(tab, event) {
-
-        var newthis = this;
-    if (tab.index=='1') {
-            //初始化查询(补给点位列表)
-            //请求后台
+     //初始化查询(补给点位列表)
+    cpbujd(){
+    //请求后台
+    var newthis = this;
             var url = '/cp/cpselect';
             $.ajax({
                 type: 'POST',
@@ -646,6 +696,14 @@ handleClose(done) {
                     return false;
                 }
             });
+    },
+    //标题栏点击事件
+    handleClick(tab, event) {
+        var newthis = this;
+    if (tab.index=='1') {
+            //初始化查询(补给点位列表)
+            newthis.cpbujd();
+
         } else if (tab.index=='2') {
         newthis.listUser();
         } else if (tab.index=='3') {

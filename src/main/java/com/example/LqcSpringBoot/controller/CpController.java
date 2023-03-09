@@ -43,6 +43,15 @@ public class CpController {
     }
 
     /**
+     * 清空Sport_cp table
+     */
+    @RequestMapping("/delcpall")
+    @ResponseBody
+    public String delCptable() {
+        int delete = scpMapper.delete(null);
+        return String.valueOf(delete);
+    }
+    /**
      * 添加cp点内容
      */
     @RequestMapping("/cpset")
