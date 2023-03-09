@@ -45,9 +45,9 @@
         <div style="text-align: center;">
            <!-- <img src="/imgs/aebss.jpeg" style="width: 80%; height: 300px;">-->
         </div>
-        <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">
-        </div><br>
-        <span id="ename"></span><br><br><br><br>
+<!--        <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">-->
+<!--        </div><br>-->
+<!--        <span id="ename"></span><br><br><br><br>-->
         <el-card class="box-card" >
 
             <el-tabs type="border-card" @tab-click="handleClick">
@@ -331,6 +331,15 @@
             <el-button type="primary" @click="addKm()">新 增</el-button>
         </div>
     </el-dialog>
+    <!--  生成二维码的dialog弹出框-->
+    <el-dialog title="二维码" :visible.sync="dialogFormEwm">
+        <div slot="footer" class="dialog-footer" style="text-align:center;">
+            <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">
+            </div><br>
+            <span id="ename"></span><br><br><br>
+            <el-button @click="dialogFormEwm = false">取 消</el-button>
+        </div>
+    </el-dialog>
 </div>
 </body>
 <script src="/vue/jquery.min.js"></script>
@@ -351,6 +360,7 @@
             pageSize: 10,
             dialogFormVisible: false,
             dialogVisible: false,
+            dialogFormEwm: false,
             KmTableData:[],//data table
             tableData:[],//data table
             UsertableData:[],//user data
@@ -681,6 +691,7 @@ handleClose(done) {
       },
     //点击生成二维码
      clickRow(index, rows) {
+            this.dialogFormEwm = true;
             document.getElementById("locatorQRCodeRef").style.display="";
             document.getElementById("locatorQRCodeRef").innerHTML = "";
             document.getElementById('ename').innerHTML = rows[index].cpname;
