@@ -33,7 +33,7 @@
     .znfuqi{width:100%; margin:0px auto; text-align:center; position:absolute; z-index:99;}
     .znfanhuisy{ display:none !important;}
         .bgimg {
-        background:url("/imgs/ghw.jpg");
+        background:url("/imgs/lghead.jpg");
         position: relative;
         margin:0px auto;
         width: 100%;
@@ -50,17 +50,23 @@
 
         </el-row><br>
         <div>
-            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="90px">
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px" style="text-align: left;">
                 <el-form-item label="CPID" prop="cpid" style="display: none;">
                     <el-input v-model="form.cpid" autocomplete="off" id="cpid" style="display: none;" oninput="if(value.length>100)value=value.slice(0,100)"></el-input>
                 </el-form-item>
                 <br><br><br><br><br>
                 <el-form-item label="手机号" prop="phone">
-                    <el-input v-model="form.phone" autocomplete="off" placeholder="本人手机号码"></el-input>
+                    <el-input v-model="form.phone" autocomplete="off" style="width: 400px;" placeholder="本人手机号码"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="success" style="width: 100px; height: 100px;" @click="onSubmit" size="medium" circle>点击打卡</el-button>
-                </el-form-item>
+                <div style="text-align: center;">
+                    <el-form-item>
+                        <el-button type="success" style="width: 100px; height: 100px;" @click="onSubmit" size="medium" circle>点击打卡</el-button>
+                    </el-form-item>
+
+                </div>
+<!--                <el-form-item>-->
+<!--                    <el-button type="success" style="width: 100px; height: 100px;" @click="onSubmit" size="medium" circle>点击打卡</el-button>-->
+<!--                </el-form-item>-->
             </el-form>
         </div>
     </div>
