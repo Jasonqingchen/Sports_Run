@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>设置助手</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="renderer" content="webkit">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/vue/element-ui.min.css">
+<!--    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">-->
+</head>
+<style type="text/css">
+                   //图标样式
+                .addDelete {
+                  position: absolute;
+                  top: 10px;
+                  right: -25px;
+                  display: flex;
+                  flex-direction: column;
+                  i {
+                    font-size: 18px;
+                    flex: 1;
+                  }
+                  .el-icon-circle-plus-outline {
+                    color: #2d8cf0;
+                  }
+                  .el-icon-remove-outline {
+                    color: red;
+                  }
+                }
+                .d{
+                background:url("/imgs/d.jpg")
+                }
+                .el-carousel__item img {
+                }
+
+              .el-carousel__item:nth-child(2n) {
+                background-color: #99a9bf;
+              }
+
+              .el-carousel__item:nth-child(2n+1) {
+                background-color: #d3dce6;
+              }
+</style>
+<body class="bgimg" style="text-align:center;background-color: #B6B0FF;">
+<!--html代码 -->
+<div id="app">
+    <div class="wrappers">
+        <div style="text-align: center;">
+           <!-- <img src="/imgs/aebss.jpeg" style="width: 80%; height: 300px;">-->
+            <template>
+                <el-carousel :interval="4000" type="card" height="">
+                    <el-carousel-item>
+                        <img src="/imgs/1.jpeg">
+                    </el-carousel-item>
+                    <el-carousel-item>
+                        <img src="/imgs/2.jpeg">
+                    </el-carousel-item>
+                    <el-carousel-item>
+                        <img src="/imgs/3.jpg">
+                    </el-carousel-item>
+                </el-carousel>
+            </template>
+        </div>
+        <el-card class="box-card" style="text-align:center;background-color: #B6B0FF;">
+
+            <el-tabs type="border-card" @tab-click="handleClick" style="text-align:center;background-color: #B6B0FF;">
+                <el-tab-pane>
+                    <span slot="label"><i class="el-icon-location"></i> CP点位设定</span>
+                    <template>
+                        <ul class="list" style="overflow:auto" infinite-scroll-disabled="disabled">
+                            <div style="text-align:center;">
+                                <el-form :inline="true"
+                                         class="demo-form-inline"
+                                         ref="orRuleForm"
+                                         :model="orRuleForm">
+                                    <!--固定字段-->
+                                    <el-form-item
+                                            label="比赛开始时间">
+                                        <el-date-picker
+                                                v-model="orRuleForm.starttime"
+                                                type="datetime"
+                                                placeholder="选择比赛开始日期时间"
+                                                value-format="yyyy-MM-dd HH:mm:ss">
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item
+                                            label="比赛结束时间">
+                                        <el-date-picker
+                                                v-model="orRuleForm.endtime"
+                                                type="datetime"
+                                                placeholder="选择比赛结束日期时间"
+                                                value-format="yyyy-MM-dd HH:mm:ss">
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <!--循环加载点字段-->
+                                    <div v-for="(every, index) in orRuleForm.orFormList" :key="index">
+                                        <el-row>
+                                            <el-col :span="16"><div class="grid-content bg-purple" style="text-align: right;">
+                                                <el-form-item
+                                                        label="补给点名称"
+                                                        :prop="'orFormList.' + index + '.cpname'">
+                                                    <el-input v-model="every.cpname"></el-input>
+                                                </el-form-item>
+                                                <el-form-item
+                                                        label="距离"
+                                                        :prop="'orFormList.' + index + '.cpkm'">
+                                                    <el-input v-model="every.cpkm"></el-input>
+                                                </el-form-item>
+                                                <el-form-item
+                                                        class="compareClass"
+                                                        label="关门时间"
+                                                        :prop="'orFormList.' + index + '.cpendtime'">
+                                                    <el-date-picker
+                                                            v-model="every.cpendtime"
+                                                            type="datetime"
+                                                            placeholder="该CP点关门时间"
+                                                            value-format="yyyy-MM-dd HH:mm:ss">
+                                                    </el-date-picker>
+                                                </el-form-item>
+                                            </div></el-col>
+                                            <el-col :span="8"><div class="grid-content bg-purple-light" style="text-align: left;">
+                                                <!--增加行减少行按钮-->
+                                                <div class="addDelete">
+                                                    <i v-if="index == orRuleForm.orFormList.length - 1"
+                                                       @click="addOrHanlder(index)"
+                                                       class="el-icon-circle-plus-outline"
+                                                    ></i>
+                                                    <i v-if="index !== orRuleForm.orFormList.length - 1"
+                                                       @click="deleteOrHandler(every, index)"
+                                                       class="el-icon-remove-outline"
+                                                    ></i>
+                                                </div>
+                                            </div></el-col>
+                                        </el-row>
+                                    </div>
+                                </el-form>
+                                <span slot="footer" class="dialog-footer">
+                     <el-button type="primary" @click="orSaveHandler">保 存</el-button>
+                    <el-button  @click="fh">返 回</el-button>
+                 </span>
+                            </div>
+                        </ul>
+                    </template>
+                </el-tab-pane>
+                <el-tab-pane label="CP点位二维码生成">
+                    <span slot="label"><i class="el-icon-printer"></i> CP点位二维码生成</span>
+                    <el-row>
+                        <el-date-picker
+                                v-model="input1"
+                                type="datetime"
+                                placeholder="选择比赛开始日期时间"
+                                value-format="yyyy-MM-dd HH:mm:ss">
+                        </el-date-picker>
+                    <el-button type="success" @click="save()">保存</el-button>
+                    <el-button type="danger" plain icon="el-icon-delete" @click="delcp()">清除所有CP点位</el-button>
+                    </el-row><br><br>
+                    <template>
+                        <el-table
+                                :data="tableData"
+                                style="width: 100%"
+                                max-height="550">
+                            <el-table-column
+                                    prop="starttime"
+                                    label="比赛开始时间"
+                                    width="200">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cpname"
+                                    label="CP点名称"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cpendtime"
+                                    label="关门时间"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="bz"
+                                    label="备注"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="420">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            @click.native.prevent="clickRow(scope.$index, tableData)"
+                                            type="text"
+                                            size="small">
+                                        <span style="color:#EF535A">点击生成二维码</span>
+                                    </el-button>
+                                        <el-switch
+                                                v-model="scope.row.sw"
+                                                active-value="1"
+                                                inactive-value="2"
+                                                @change="swit(scope.$index, tableData)"
+                                                active-text="可关门"
+                                                name="swithcvalue"
+                                                inactive-text="不关门">
+                                        </el-switch>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-tab-pane>
+                <el-tab-pane label="用户管理">
+                    <span slot="label"><i class="el-icon-user-solid"></i> 用户管理</span>
+                    <template>
+                        <el-table
+                                :data="UsertableData.filter(data => !search || data.number.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1) * pageSize,currentPage * pageSize)"
+                                style="width: 100%"
+                                max-height="550"
+                                id="UsertableData">
+                            <el-table-column
+                                    prop="name"
+                                    label="名字"
+                                    width="200">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="sex"
+                                    label="性别"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="number"
+                                    label="参赛号码"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="phone"
+                                    label="联系方式"
+                                    width="220">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="status"
+                                    label="状态"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="issignin"
+                                    label="打卡情况"
+                                    :filters="[{ text: '未签到', value: '未签到' }, { text: '已签到', value: '已签到' }]"
+                                    :filter-method="filterTag"
+                                    filter-placement="bottom-end"
+                                    width="150">
+                                <template slot-scope="scope">
+                                    <el-tag
+                                            :type="scope.row.issignin === '未签到' ? 'danger' : 'success'"
+                                            disable-transitions>{{scope.row.issignin}}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    width="300">
+                                <template slot="header" slot-scope="scope">
+                                    <el-input
+                                            v-model="search"
+                                            size="mini"
+                                            placeholder="输入号码搜索"/>
+                                </template>
+                                <template slot-scope="scope">
+                                    <el-button
+                                            @click="handleDelete(scope.$index, scope.row)"
+                                            type="text"
+                                            size="small"
+                                            style="color: red;">
+                                        删除
+                                    </el-button>
+                                    <el-button
+                                            @click="out(scope.$index, scope.row)"
+                                            type="text"
+                                            size="small">
+                                        退赛
+                                    </el-button>
+                                    <el-button
+                                            @click="delout(scope.$index, scope.row)"
+                                            type="text"
+                                            size="small"
+                                    style="color:#CD7603">
+                                        取消退赛
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template><br><br>
+                    <el-row>
+                        <el-col :span="12" style="text-align: left;">
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="currentPage"
+                                    :page-sizes="[10, 200, 300, 400]"
+                                    :page-size="pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="total">
+                            </el-pagination>
+                        </el-col>
+                        <el-col :span="12"><div style="text-align: right;"><el-button @click="Export" size="mini">导出</el-button></div></el-col>
+                    </el-row>
+
+                </el-tab-pane>
+                <el-tab-pane label="组别设置">
+                    <span slot="label"><i class="el-icon-s-data"></i> 组别设置</span>
+                    <el-row style="text-align: right;">
+                        <el-button type="text" @click="dialogFormVisible = true">新增组别</el-button>
+                    </el-row><br><br>
+
+                    <template>
+                        <el-table
+                                :data="KmTableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    fixed
+                                    prop="id"
+                                    label="ID"
+                                    width="200">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="name"
+                                    label="组别名称"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="400">
+                                <template slot-scope="scope">
+                                    <el-button @click="kmhandleClick(scope.row)" type="text" size="small">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-tab-pane>
+            </el-tabs>
+        </el-card>
+    </div>
+    <el-dialog title="新增组别" :visible.sync="dialogFormVisible">
+        <el-form :model="kmForm">
+            <el-form-item label="组别" width="120px">
+                <el-input v-model="kmForm.name" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addKm()">新 增</el-button>
+        </div>
+    </el-dialog>
+    <!--  生成二维码的dialog弹出框-->
+    <el-dialog title="二维码" :visible.sync="dialogFormEwm">
+        <div slot="footer" class="dialog-footer" style="text-align:center;">
+            <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">
+            </div><br>
+            <span id="ename"></span><br><br><br>
+            <el-button @click="dialogFormEwm = false">取 消</el-button>
+        </div>
+    </el-dialog>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
+<script src="/js/qrcode.js"></script>
+<script src="/js/excel.js"></script>
+<!--<script src="/vue/element-ui.min.js"></script>-->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+            input1: "",
+            total: '',
+            currentPage: 1,
+            pageSize: 10,
+            dialogFormVisible: false,
+            dialogVisible: false,
+            dialogFormEwm: false,
+            KmTableData:[],//data table
+            tableData:[],//data table
+            UsertableData:[],//user data
+            kmForm:{
+                name:""
+            },
+            search: '',
+             //定义表单项
+ orRuleForm: {
+        starttime: "",
+        endtime: "",
+        orFormList: [
+          {
+            cpname: "",
+            cpendtime: "",
+            indexid:'',
+            cpkm:''
+          },
+        ],
+      },
+            };
+        },
+        //初始化
+        mounted: function () {
+
+        },
+        //被调用方法
+        methods: {
+        //新增里程
+        addKm(){
+        var from = this.kmForm;
+            var newthis = this;
+            if (from.name ==='') {
+           newthis.$message.error('里程为空 请填写里程距离');
+            return;
+            }
+            //新增
+            var url = '/km/add';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {name:from.name},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.dialogFormVisible = false;
+                from.name = "";
+                newthis.kmlist();
+                newthis.$message({
+                            message: '新增成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        // 里程删除
+        kmhandleClick(row){
+        var newthis = this;
+            //单行删除
+            var url = '/km/del';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.kmlist();
+                newthis.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        //清除所有的CP点
+        delcp(){
+        var newthis = this;
+        var url = '/cp/delcpall';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                if (result != '0') {
+                    newthis.$message({
+                                message: '清除成功',
+                                type: 'success'
+                            });
+                            newthis.cpbujd();
+                    } else {
+                    newthis.$message({
+                                message: '无数据',
+                                type: 'success'
+                            });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
+
+        save() {
+        var newStartTime = this.input1;
+        var newthis = this;
+            //更新时间
+            var url = '/cp/uptime';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {time: newStartTime},
+                dataType: 'json',
+                success: function (result) {
+                if (result != '0') {
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        location.reload();
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        //是否开启关门时间校验
+        swit(index,row){
+        if (row[index].sw=="1") {
+        row[index].sw="1";
+        } else {
+        row[index].sw="2";
+        }
+
+            var newthis = this;
+            //改补给点是否有关门时间
+            var url = '/cp/issw';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: row[index],
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        //标签方法
+        filterTag(value,row) {
+        return row.issignin === value;
+        },
+        //前台导出方法
+         Export(){
+         $("#UsertableData").table2excel({  //exceltable为存放数据的table
+       　　　　// 不被导出的表格行的CSS class类
+       　　　　exclude: ".noExl",
+       　　　　// 导出的Excel文档的名称
+       　　　　name: "表格-" + new Date().getTime(),
+       　　　　// Excel文件的名称
+        　　　　filename: "表格-" + new Date().getTime(),
+        　　　　bootstrap: false
+    　　    });
+        },
+        //分页
+        handleSizeChange(val) {
+        var newthis = this;
+        //一页显示多少条
+          newthis.pageSize=val;
+      },
+      handleCurrentChange(val) {
+        var newthis = this;
+        newthis.currentPage=val;
+      },
+        //退赛
+        out(index,row) {
+        var newthis = this;
+            //退赛
+            var url = '/user/out';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.listUser();
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        //取消退赛
+        delout(index,row) {
+        var newthis = this;
+            //退赛
+            var url = '/user/delout';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.listUser();
+                newthis.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        //del only one
+        handleDelete(index,row){
+            var newthis = this;
+            //单行删除
+            var url = '/user/del';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {id:row.id},
+                dataType: 'json',
+                success: function (result) {
+                if (result=='1') {
+                newthis.listUser();
+                newthis.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+handleClose(done) {
+        //关闭二维码的弹窗
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+            //表单新增行
+    addOrHanlder(index) {
+      let obj = {
+        cpname: "",
+        cpendtime: "",
+        indexid: index+1
+      };
+      this.orRuleForm.orFormList.push(obj);
+    },
+    //表单删除行
+    deleteOrHandler(every, index) {
+      this.orRuleForm.orFormList.splice(index, 1);
+    },
+    fh () {
+    location.href="/cp/tz";
+    },
+     //初始化查询(补给点位列表)
+    cpbujd(){
+    //请求后台
+    var newthis = this;
+            var url = '/cp/cpselect';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.tableData=result
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+    },
+    //标题栏点击事件
+    handleClick(tab, event) {
+        var newthis = this;
+    if (tab.index=='1') {
+            //初始化查询(补给点位列表)
+            newthis.cpbujd();
+
+        } else if (tab.index=='2') {
+        newthis.listUser();
+        } else if (tab.index=='3') {
+        newthis.kmlist();
+        }
+        //console.log(tab, event);
+      },
+      //里程列表
+      kmlist() {
+      var newthis = this;
+      //请求后台
+            var url = '/km/newlist';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.KmTableData=result
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+      },
+      //用户列表
+      listUser () {
+      var newthis = this;
+      var url = '/user/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.UsertableData=result
+                newthis.total = newthis.UsertableData.length;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+      },
+    //点击生成二维码
+     clickRow(index, rows) {
+            this.dialogFormEwm = true;
+            document.getElementById("locatorQRCodeRef").style.display="";
+            document.getElementById("locatorQRCodeRef").innerHTML = "";
+            document.getElementById('ename').innerHTML = rows[index].cpname;
+            var newthis = this;
+           var loading = newthis.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            var urls = "http://www.liuqc.site/gps/tz?id="+rows[index].id;
+            //console.log(urls);
+			var qrcode = new QRCode(document.getElementById("locatorQRCodeRef"),{
+				text: urls,
+				width: 200,
+				height: 200,
+				render: 'table',
+				colorDark : "#f60",
+				colorLight : "#ccc",
+				correctLevel : 1 //二维码结构复杂性 0~3
+			});
+          loading.close();
+    <!--let qrcodeCanvas = ((this.$refs.locatorQRCodeRef || {})?.getElementsByTagName?.('canvas') || [])?.[0];-->
+    <!--//this.qrcodeImgUrl = qrcodeCanvas?.toDataURL?.('image/png'); 作为下载图片资源-->
+    <!--   rows.splice(index, 1);-->
+      },
+    //保存
+    orSaveHandler(){
+    var from = this.orRuleForm;
+    var list = JSON.stringify(from.orFormList);
+    var d = {
+                'starttime': from.starttime,
+                'endtime': from.endtime,
+                'list': list,
+            };
+            var newthis = this;
+            //请求后台
+            var url = '/cp/cpset';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'json',
+                success: function (result) {
+                    if (result == 1) {
+                        newthis.$message({
+                            message: '设置成功',
+                            type: 'success'
+                        });
+                    } else {
+                        newthis.$message.error('设置失败');
+                        }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+            console.log('submit!');
+            }
+    },
+        //------------------------------底部
+    })
+</script>
+<!--<script src="/echarts.js"></script>-->
+</html>

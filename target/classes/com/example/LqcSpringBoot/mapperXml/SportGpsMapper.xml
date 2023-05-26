@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.LqcSpringBoot.mapper.SportGpsMapper" >
+  <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.SportGps" >
+    <result column="gpsid" property="gpsid" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="cpid" property="cpid" jdbcType="VARCHAR" />
+    <result column="gpstime" property="gpstime" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="sumtime" property="sumtime" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="groupzb" property="groupzb" jdbcType="VARCHAR" />
+    <result column="cpname" property="cpname" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.example.LqcSpringBoot.model.SportGps" >
+    insert into sport_gps (gpsid, bz, userid, 
+      cpid, gpstime, username, 
+      sumtime, sex, groupzb, 
+      cpname,phone)
+    values (#{gpsid,jdbcType=VARCHAR}, #{bz,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{cpid,jdbcType=VARCHAR}, #{gpstime,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{sumtime,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{groupzb,jdbcType=VARCHAR}, 
+      #{cpname,jdbcType=VARCHAR},
+    #{phone,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select gpsid, bz, userid, cpid, gpstime, username, sumtime, sex, groupzb, cpname,phone
+    from sport_gps
+  </select>
+  <!--验证选手是否打卡-->
+  <select id="selectGpByPhoneAndCpid" resultMap="BaseResultMap" >
+    select * from sport_gps where phone = #{phone} and cpid = #{cpid}
+  </select>
+  <!--根据条件查询选手信息-->
+  <select id="selectByPhone" resultMap="BaseResultMap">
+    select * from (SELECT
+    IFNULL( g.gpstime, '-' ) gpstime,
+    IFNULL( g.sumtime, '-' ) sumtime,
+    c.id,
+    IFNULL( c.cpname, '-' ) cpname,
+    IFNULL(c.cpendtime,'-') bz,
+    g.phone,
+    c.indexid
+    FROM
+    sport_cp c
+    LEFT JOIN sport_gps g ON c.id = g.cpid) s
+    where s.gpstime = '-' or s.phone = #{phone} GROUP BY s.id
+    ORDER BY s.indexid
+  </select>
+  <!--验证是否打过卡-->
+  <select id="selectByPhones" resultMap="BaseResultMap" >
+    select * from sport_gps where phone = #{phone}
+  </select>
+
+</mapper>

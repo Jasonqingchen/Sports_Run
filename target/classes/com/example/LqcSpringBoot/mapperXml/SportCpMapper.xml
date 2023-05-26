@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.LqcSpringBoot.mapper.SportCpMapper">
+  <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.SportCp">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="cpname" jdbcType="VARCHAR" property="cpname" />
+    <result column="cpendtime" jdbcType="VARCHAR" property="cpendtime" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+    <result column="starttime" jdbcType="VARCHAR" property="starttime" />
+    <result column="endtime" jdbcType="VARCHAR" property="endtime" />
+    <result column="indexid" jdbcType="VARCHAR" property="indexid" />
+
+    <result column="gpstime" jdbcType="VARCHAR" property="gpstime" />
+    <result column="sumtime" jdbcType="VARCHAR" property="sumtime" />
+    <result column="sw" jdbcType="VARCHAR" property="sw" />
+    <result column="cpkm" jdbcType="VARCHAR" property="cpkm" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, cpname, cpendtime, userid, bz, starttime, endtime,indexid,sumtime,gpstime,sw,cpkm
+    from sport_cp
+  </select>
+  <update id="updateTime">
+    update sport_cp set starttime = #{time} where id is not null;
+  </update>
+</mapper>

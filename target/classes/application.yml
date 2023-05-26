@@ -1,0 +1,15 @@
+server:
+  port: 8666
+  session:
+  cookie:
+    name: sessionid
+spring:
+  datasource:
+    url: jdbc:mysql://1.12.238.58:3306/myadmin?serverTimezone=GMT%2B8&useUnicode=true&autoReconnect=true&useAffectedRows=true&characterEncoding=utf-8
+    username: admin
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  mapper-locations: "classpath*:com/example/LqcSpringBoot/mapperXml/*.xml"
+  #configuration:
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

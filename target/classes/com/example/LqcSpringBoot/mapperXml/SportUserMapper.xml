@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.LqcSpringBoot.mapper.SportuserMapper" >
+  <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.SportUser" >
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="zbz" property="bz" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="min" property="min" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="sumtime" property="sumtime" jdbcType="VARCHAR" />
+    <result column="issignin" property="issignin" jdbcType="VARCHAR" />
+    <result column="sumti" property="sumti" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select name, sex, phone, bz, id,number,min,status,sumtime,issignin,sumti
+    from sport_user
+  </select>
+  <!--对手机号进行查重-->
+  <select id="selectByPhone" resultMap="BaseResultMap">
+    select *
+    from sport_user where phone = #{phone}
+  </select>
+  <!--所有选手进行排序-->
+  <select id="selectOderByMin" resultMap="BaseResultMap">
+    select *
+    from sport_user order by min
+  </select>
+  <!--对手机号进行查重-->
+  <select id="selectByPhone" resultMap="BaseResultMap">
+    select *
+    from sport_user where phone = #{phone}
+  </select>
+  <!--所有选手进行排序-->
+  <select id="selectByMap" resultMap="BaseResultMap">
+    SELECT u.*,
+    IFNULL(MAX(g.sumtime), '-' ) sumti
+    FROM sport_user u LEFT JOIN
+    sport_gps g ON g.phone = u.phone  where 1=1
+    <if test = " phone != '' ">
+      and u.phone =#{phone}
+    </if>
+    <if test = " sex != '' ">
+      and u.sex =#{sex}
+    </if>
+    <if test = " name != '' ">
+      and u.name like concat('%',#{name},'%')
+    </if>
+    <if test = " groupzb != '' ">
+      and u.groupzb =#{groupzb}
+    </if>
+
+    GROUP BY u.name
+    order by u.bz desc
+  </select>
+  <!--签到-->
+  <update id="updateByPhone">
+    update sport_user set issignin = '已签到' where phone = #{phone}
+  </update>
+</mapper>

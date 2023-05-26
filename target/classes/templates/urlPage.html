@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>导航页面</title>
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+<style>
+    .icon {
+  width: 100px;
+  height: 100px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  text-align:center;
+}
+.x {
+height: 100px;
+}
+.bg {
+        background:url("/imgs/bjt.jpg");
+        background-size: 100%;
+        height: 800px;
+}
+</style>
+<body class="bg">
+<br><br><br><br><br><br>
+<!--html代码 -->
+<div id="app">
+    <!--第一排-->
+    <el-row style="text-align: center;">
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('1')" style="cursor:pointer;">
+                <use xlink:href="#icon-jiance"></use>
+                <div @click="changeOrder('1')" style="cursor:pointer; color: #2C6BFF;"><strong>监测</strong></div>
+            </svg>
+        </el-col>
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('2')" style="cursor:pointer;">
+                <use xlink:href="#icon-yuangongyeji"></use>
+                <div @click="changeOrder('2')" style="cursor:pointer; color: #2C6BFF;"><strong>员工业绩</strong></div>
+            </svg>
+        </el-col>
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('3')" style="cursor:pointer;">
+                <use xlink:href="#icon-paihang1"></use>
+                <div @click="changeOrder('3')" style="cursor:pointer; color: #2C6BFF;"><strong>排行</strong></div>
+            </svg>
+        </el-col>
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('4')" style="cursor:pointer;">
+                <use xlink:href="#icon-dingdanchaxun"></use>
+                <div @click="changeOrder('4')" style="cursor:pointer; color: #2C6BFF;"><strong>订单查询</strong></div>
+            </svg>
+        </el-col>
+    </el-row><br><br>
+    <!--第二排-->
+    <el-row style="text-align: center;">
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('5')" style="cursor:pointer;">
+                <use xlink:href="#icon-guanlishezhi"></use>
+                <div @click="changeOrder('5')" style="cursor:pointer; color: #2C6BFF;"><strong>管理设置</strong></div>
+            </svg>
+        </el-col>
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('6')" style="cursor:pointer;">
+                <use xlink:href="#icon-lianjie"></use>
+                <div @click="changeOrder('6')" style="cursor:pointer; color: #2C6BFF;"><strong>链接</strong></div>
+            </svg>
+        </el-col>
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('7')" style="cursor:pointer;">
+                <use xlink:href="#icon-zixun1"></use>
+                <div @click="changeOrder('7')" style="cursor:pointer; color: #2C6BFF;"><strong>咨询</strong></div>
+            </svg>
+        </el-col>
+        <el-col :span="6">
+            <svg class="icon" aria-hidden="true" @click="changeOrder('8')" style="cursor:pointer;">
+                <use xlink:href="#icon-WIFI"></use>
+                <div @click="changeOrder('8')" style="cursor:pointer; color: #2C6BFF;"><strong>网络</strong></div>
+            </svg>
+        </el-col>
+    </el-row>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<!--<script src="/echarts.js"></script>-->
+<!--icont图标引用-->
+<link rel="stylesheet" href="/icont/iconfont.css">
+<script src="/icont/iconfont.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+            };
+        },
+        //初始化
+        mounted: function () {
+        },
+        //被调用方法
+        methods: {
+        changeOrder (data) {
+            if("1"==data) {
+            location.href="/cp/tzset";
+            }
+            if("2"==data) {
+            location.href="/cp/tzset";
+            }
+            if("3"==data) {
+            location.href="/cp/tzset";
+            }
+            if("4"==data) {
+            location.href="/cp/tzset";
+            }
+            if("5"==data) {
+            location.href="/cp/tzset";
+            }
+            if("6"==data) {
+            location.href="/cp/tzset";
+            }
+            if("7"==data) {
+            location.href="/cp/tzset";
+            }
+            if("8"==data) {
+            location.href="/cp/tzset";
+            }
+         }
+        }
+    })
+</script>
+</html>

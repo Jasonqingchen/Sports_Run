@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>选手成绩查询</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="renderer" content="webkit">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+<style type="text/css">
+    html,body{height:100%;}
+    body,*{margin:0;padding:0;text-decoration:none; border:0;list-style-type: none;}
+    body{ margin:0px;font-family: "微软雅黑","宋体",Arial;background-color:#ffffff;line-height:1.8;font-size:14px;}
+    input[type="submit"],input[type="reset"],input[type="button"],button { -webkit-appearance: none; }
+    .wrappers{background-color: #f5f7fa;width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
+    @media screen and (min-width: 1200px) {
+        .wrappers{max-width:640px; }
+    }
+    .znfanhuisy{ display:none !important;}
+        .bgimg {
+        background:url("/imgs/lghead.jpg");
+        position: relative;
+        margin:0px auto;
+        width: 100%;
+        height: 120px;
+  }
+
+  #mytable {
+        width:90%;margin:0px auto; text-align:center; position: relative;
+    }
+    .row {
+        width: 350px;
+    }
+    .divhead{
+　　top:10px;left:0px;height:50px;z-index:999;
+    }
+    caption {
+        padding: 0 0 5px 0;
+        width: 350px;
+        font: italic 9px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        text-align: left;
+    }
+
+    th {
+        font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #4f6b72;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 6px 6px 6px 12px;
+        background: #ffffff  no-repeat;
+    }
+
+    td {
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
+    }
+
+
+    td.alt {
+        background: #F5FAFA;
+        color: #797268;
+    }
+
+    th.spec {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #fff no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    }
+
+    th.specalt {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #f5fafa no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #797268;
+    }
+
+
+</style>
+<body class="">
+<!--html代码 -->
+<div id="app">
+    <div class="wrappers">
+        <div class="divhead">
+            <el-row>
+                <!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
+                <el-col :span="24">
+                    <div class="bgimg"></div>
+                </el-col>
+
+            </el-row>
+            <br>
+            <!--查询表单-->
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="60px" style="text-align: left;">
+                <div style="text-align: left;">
+                    <!--<el-form-item  label="" prop="tj" style="width: 400px;">
+                        <el-input v-model="form.tj" autocomplete="off" placeholder="输入姓名或手机号"></el-input>
+                    </el-form-item>-->
+                    <el-form-item label="" prop="tj" style="width: 400px;">
+                        <el-input placeholder="输入姓名或手机号" v-model="form.tj" class="input-with-select" clearable>
+                            <el-button slot="append" icon="el-icon-search" @click="userList"></el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-row style="width: 700px;">
+                        <el-col :span="7">
+                            <el-form-item label="" style="width: 180px;">
+                                <el-select v-model="form.groupzb" clearable placeholder="请选择组别"
+                                           @change="partTypesChanged">
+                                    <el-option
+                                            v-for="item in kmoptions"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>&nbsp;&nbsp;
+                        <el-col :span="7">
+                            <el-form-item label="" style="width: 180px;">
+                                <el-select v-model="form.sex" clearable placeholder="请选择性别"
+                                           @change="partTypesChanged">
+                                    <el-option label="男" value="男"></el-option>
+                                    <el-option label="女" value="女"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <!--<el-button @click="resetForm('form')" type="danger" size="">重置</el-button>-->
+                        </el-col>
+                    </el-row>
+
+
+                    <!--<el-form-item label="性别" prop="sex" style="width: 400px;">
+                        <el-radio-group v-model="form.sex">
+                            <el-radio label="男"></el-radio>
+                            <el-radio label="女"></el-radio>
+                        </el-radio-group>&nbsp;&nbsp;&nbsp;
+                        <el-button  @click="userList" style="background-color:#12861C;color:#FFF" size="mini">搜索</el-button>
+                        <el-button @click="resetForm('form')" type="danger" size="mini">重置</el-button>
+                    </el-form-item>-->
+                    <el-form-item>
+                    </el-form-item>
+                </div>
+
+            </el-form>
+        </div>
+        <br><br><br><br><br><br><br><br><br>
+
+        <div id="tab" style="color: red;"></div>
+        <!--循环列表-->
+        <div v-for="(user,index) in oudlist">
+            <el-collapse v-model="activeNames" @change="handleChange" accordion>
+                <el-collapse-item :name="user.phone">
+                    <template slot="title">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<el-tag
+                            type="danger"
+                            effect="dark">
+                        {{ index+1 }}
+                    </el-tag>&nbsp;&nbsp;&nbsp;
+                        <table>
+                            <tr>
+                                <span style="text-align: left; width:150px;">{{user.name}}</span>&nbsp;&nbsp;&nbsp;
+                                <span style="text-align: left;width:20px;">{{user.number}}</span>&nbsp;&nbsp;
+                                <span style="text-align: right; width:70px;">{{user.groupzb}}</span>&nbsp;<br><br>
+                            </tr>
+                            <br><br>
+                            <template v-if="user.status==='比赛中'">
+                                <span style="text-align: left;color:#FFB100;width:30px;">{{user.status}}</span>
+                            </template>
+                            <template v-if="user.status==='未开始'">
+                                <span style="text-align: left;color:#676767;width:30px;">{{user.status}}</span>
+                            </template>
+                            <template v-if="user.status==='完赛'">
+                                <span style="text-align: left;color:#007D39;width:30px;">{{user.status}}</span>
+                            </template>
+                            <template v-if="user.status==='退赛'">
+                                <span style="text-align: left;color:#830000;width:30px;">{{user.status}}</span>
+                            </template>
+                            <br>
+                            <!--<span style="text-align: left;color:#676767;width:100px;">{{user.sumti}}</span>-->
+                        </table>
+                        <!--
+
+                        &nbsp;&nbsp;&nbsp; {{user.name}}&nbsp;&nbsp;&nbsp;{{user.number}}&nbsp;&nbsp;&nbsp;{{user.sex}}&nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <!--<template v-if="user.sex==='男'">
+                            <i class="el-icon-user-solid" style="color: #1D8AFF;"></i>
+                        </template>
+                        <span v-else>
+                        <i class="el-icon-user-solid" style="color: #FF0000;"></i>
+                        </span>-->
+
+                    </template>
+
+                    </template>
+
+                    <table id="mytable" cellspacing="0">
+                        <tr>
+                            <th scope="col">补给点</th>
+                            <th scope="col">打卡时间</th>
+                            <th scope="col">关门时间</th>
+                            <th scope="col">距离</th>
+                            <th scope="col">配速</th>
+                            <th scope="col">总用时</th>
+                            <th scope="col">已完成</th>
+                        </tr>
+                        <tr v-for="(items,index) in tableData">
+                            <td class="row" style="text-align:left;">{{items.cpname}}</td>
+                            <td class="row" style="text-align:left;">{{items.gpstime}}</td>
+                            <td class="row" style="text-align:left;">{{items.cpendtime}}</td>
+                            <td class="row" style="text-align:left;">{{items.cpkm}}</td>
+                            <td class="row" style="text-align:left;">{{items.bz}}</td>
+                            <td class="row" style="text-align:left;">{{items.sumtime}}</td>
+                            <td class="row" style="text-align:left;">{{items.jl}}</td>
+                        </tr>
+                    </table>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+        var regExp = new RegExp("^1[3578]\\d{9}$");
+        var validatePhone = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!regExp.test(value)) {
+            callback(new Error('请输入正确对手机号'));
+          } else {
+          callback();
+        }
+      };
+            return {
+            activeNames:'',//折叠参数传递值
+            oudlist: [],
+            tableData:[],
+            kmoptions:[],//动态组别 数据源是查询来的
+              form: {
+                  tj:'',
+                  sex:'',
+                  groupzb:''
+                },
+                rules: {
+                      phone: [
+                        { validator: validatePhone, trigger: 'blur' }
+                      ]
+                }
+            };
+        },
+        //初始化
+        mounted: function () {
+        this.tableData = [{cpname:'-',gpstime:'-',sumtime:'-',bz:'-'}];
+        this.userList();
+        this.kmList();
+        },
+        methods: {
+        //里程初始查询
+        kmList(){
+        var newthis = this;
+        var url = '/km/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.kmoptions=result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
+        partTypesChanged(){
+        this.userList();
+        },
+        //重置页面内容并查询页面
+         resetForm(form) {
+            this.$refs[form].resetFields();
+            this.userList();
+          },
+        //用户列表
+        userList () {
+        var newthis = this;
+        var addForm = newthis.form;
+            var d = {
+                    'tj': addForm.tj,
+                    'sex': addForm.sex,
+                    'groupzb': addForm.groupzb
+                };
+            var url = '/list/seach';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'json',
+                success: function (result) {
+                if (result.length==0) {
+                //赋值div中的内容
+                document.getElementById("tab").innerHTML = '没有查到相关信息';
+                } else {
+                //清空div中的内容
+                document.getElementById("tab").innerHTML = '';
+                newthis.oudlist = result;
+                }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+
+        //折叠面板触发事件
+        handleChange(val) {
+            //查询选手的打卡信息和成绩情况
+        var newthis = this;
+        var url = '/list/seachUser';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {phone: val},
+                dataType: 'json',
+                success: function (result) {
+                newthis.tableData = result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        // 打卡
+        onSubmit() {
+        //拿到fromi表单数据 想后台进行提交 ajax
+          var addForm = this.form;
+          var regExpPhone = new RegExp("^1[3578]\\d{9}$");
+            var newthis = this;
+            if (addForm.phone == '') {
+            newthis.$message.error('手机号不能为空');
+            return
+            }
+            if(!regExpPhone.test(addForm.phone)) {
+            newthis.$message.error('请填写正确对手机号格式');
+            return
+            }
+            var d = {
+                'cpid': addForm.cpid,
+                'phone': addForm.phone,
+            };
+            var url = '/gps/save';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'text',
+                success: function (result) {
+                    if (result == 1) {
+                        newthis.$message({
+                            message: '打卡成功',
+                            type: 'success'
+                        });
+                    } else if (result == 2){
+                        newthis.$message.error('此手机号非选手注册手机号');
+                    } else {
+                    //存在不是选手的用户
+                        newthis.$message.error("选手"+result+'已打卡,  不可重复打卡');
+                    }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+            console.log('submit!');
+            }
+        }
+    })
+
+
+</script>
+<script src="/vue/element-ui.min.js"></script>
+<!--<script src="/echarts.js"></script>-->
+</html>

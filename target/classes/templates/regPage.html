@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>信息注册</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="renderer" content="webkit">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+<style type="text/css">
+    html,body{height:100%;}
+    body,*{margin:0;padding:0;text-decoration:none; border:0;list-style-type: none;}
+    body{ margin:0px;font-family: "微软雅黑","宋体",Arial;background-color:#ffffff;line-height:1.8;font-size:14px;}
+    .wrappers{background-color: #f5f7fa;width:100%; min-height:100%; padding:0px 0px 0px 0px;margin:0px auto;text-align:center;position: relative;overflow:hidden;}
+    @media screen and (min-width: 1200px) {
+        .wrappers{max-width:640px; }
+    }
+        .bgimg {
+        background:url("/imgs/lghead.jpg");
+        position: relative;
+        margin:0px auto;
+        width: 100%;
+        height: 120px;
+  }
+</style>
+<body class="">
+<!--html代码 -->
+<div id="app" style="text-align: center;">
+    <div class="wrappers">
+        <el-row>
+<!--            <el-col :span="24"><div class="bg-purple-dark" style="height: 50px; color: #FFFFFF; text-align: center; font-size: 25px;"><strong>注册</strong></div></el-col>-->
+                        <el-col :span="24"><div class="bgimg"></div></el-col>
+
+        </el-row><br>
+        <div style="text-align: center;">
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px" style="text-align: left;">
+                <el-form-item label="姓名" prop="name" style="width: 400px;">
+                    <el-input v-model="form.name" maxlength="10"
+                              show-word-limit></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="phone" style="width: 400px;">
+                    <el-input v-model="form.phone" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="性别" style="width: 400px;">
+                    <el-radio-group v-model="form.sex">
+                        <el-radio label="男"></el-radio>
+                        <el-radio label="女"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="组别" style="width: 400px;">
+                    <el-radio-group v-model="form.groupzb" size="medium" style="width: 400px;">
+                        <el-radio-button v-for="item in kmoptions"
+                                         :key="item.value"
+                                         :label="item.label"
+                                         :value="item.value"></el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+                <!--<el-form-item label="备注" style="width: 400px;">
+                    <el-input type="textarea" v-model="form.bz"></el-input>
+                </el-form-item>-->
+                <el-form-item>
+                    <el-button type="" @click="onSubmit" round>立即注册</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div v-for="(item,index) in baiduseace" style="text-align: left;">
+             <div v-if="index <= '10'">
+                 <span v-if="index=='0'">&nbsp;&nbsp;&nbsp;&nbsp;🔥
+            </span>
+                <span v-if="index=='1'">
+                &nbsp;&nbsp;<el-tag type="danger">{{index}}</el-tag>
+            </span>
+                <span v-if="index=='2'">
+                &nbsp;&nbsp;<el-tag type="warning">{{index}}</el-tag>
+            </span>
+                <span v-if="index=='3'">
+                &nbsp;&nbsp;<el-tag type="success">{{index}}</el-tag>
+            </span>
+                <span v-if="index!='3' & index!='2' & index!='1' & index!='0'">
+
+                &nbsp;&nbsp;<el-tag type="info">{{index}}</el-tag>
+            </span>
+                <el-link :href="item.url" type="primary" :underline="false">{{item.word}}</el-link>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+        var regExp = new RegExp("^1[3578]\\d{9}$");
+        var validatePhone = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!regExp.test(value)) {
+            callback(new Error('请输入正确对手机号'));
+          } else {
+          callback();
+        }
+      };
+            return {
+            baiduseace:[],
+            kmoptions:[],//动态组别 数据源是查询来的
+              form: {
+                  name: '',
+                  bz: '',
+                  groupzb: '',
+                  sex: '',
+                  phone:''
+                },
+                rules: {
+                      phone: [
+                        { validator: validatePhone, trigger: 'blur' }
+                      ]
+                }
+            };
+        },
+        //初始化
+        mounted: function () {
+        this.kmList();
+        this.hotSeach();
+        },
+        methods: {
+        //百度热搜
+        hotSeach () {
+        var newthis = this;
+        var url = '/reg/baidu';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.baiduseace=result.data;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
+        //里程初始查询
+        kmList(){
+        var newthis = this;
+        var url = '/km/list';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                success: function (result) {
+                newthis.kmoptions=result;
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
+        },
+        //提交from 进行注册
+        onSubmit() {
+        //拿到fromi表单数据 想后台进行提交 ajax
+          var addForm = this.form;
+          var regExpPhone = new RegExp("^1[3578]\\d{9}$");
+            var newthis = this;
+            if (addForm.sex == '' ) {
+            newthis.$message.error('性别不能为空');
+            return
+            } else if (addForm.name == '') {
+            newthis.$message.error('姓名不能为空');
+            return
+            } else if (addForm.phone == '') {
+            newthis.$message.error('手机号不能为空');
+            return
+            }else if (addForm.groupzb == '') {
+            newthis.$message.error('组别不能为空');
+            return
+            }
+            if(!regExpPhone.test(addForm.phone)) {
+            newthis.$message.error('请填写正确对手机号');
+            return
+            }
+            var d = {
+                'sex': addForm.sex,
+                'bz': addForm.bz,
+                'name': addForm.name,
+                'groupzb': addForm.groupzb,
+                'phone': addForm.phone,
+            };
+            var url = '/reg/reg';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: d,
+                dataType: 'json',
+                success: function (result) {
+                    if (result == 1) {
+                        newthis.$message({
+                            message: '恭喜你,注册成功',
+                            type: 'success'
+                        });
+                    } else {
+                        newthis.$message.error('该手机号已被注册');
+                        }
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+            console.log('submit!');
+            }
+        }
+    })
+</script>
+<script src="/vue/element-ui.min.js"></script>
+<!--<script src="/echarts.js"></script>-->
+</html>

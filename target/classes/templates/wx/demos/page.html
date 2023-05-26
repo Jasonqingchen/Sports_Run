@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试weui</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/element-ui.min.css">
+
+    <link rel="stylesheet" href="../lib/weui.min.css">
+    <link rel="stylesheet" href="../css/jquery-weui.css">
+    <link rel="stylesheet" href="css/demos.css">
+    <link rel="stylesheet" href="../css/element-icons.ttf">
+    <link rel="stylesheet" href="../css/element-icons.woff">
+
+
+</head>
+
+<body ontouchstart >
+<div class="weui-pull-to-refresh__layer">
+    <div class='weui-pull-to-refresh__arrow'></div>
+    <div class='weui-pull-to-refresh__preloader'></div>
+    <div class="down">下拉刷新</div>
+    <div class="up">释放刷新</div>
+    <div class="refresh">正在刷新</div>
+</div>
+<!--搜索-->
+<div class="weui-search-bar" id="searchBar">
+    <form class="weui-search-bar__form" action="#">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+        </div>
+        <label class="weui-search-bar__label" id="searchText" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+</div>
+<!--条件-->
+<!--<div class="weui-flex">
+    <div><div class="placeholder">weui</div></div>
+    <div class="weui-flex__item"><div class="placeholder">weui</div></div>
+    <div><div class="placeholder">weui</div></div>
+</div>-->
+<div class="weui-flex">
+    <div class="weui-flex__item"><div class="placeholder">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" name="select1">
+                    <option selected="" value="1">选择</option>
+                    <option value="1">全部园区</option>
+                    <option value="2">总部</option>
+                    <option value="3">资阳</option>
+                    <option value="4">大连</option>
+                    <option value="5">南京</option>
+                    <option value="6">济南</option>
+                </select>
+            </div>
+        </div>
+    </div></div>
+    <div class="weui-flex__item"><div class="placeholder">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" name="select1">
+                    <option selected="" value="1">选择</option>
+                    <option value="1">建档日期升序</option>
+                    <option value="2">建档日期降序</option>
+                    <option value="3">按地区排序</option>
+                    <option value="4">按行业排序</option>
+                    <option value="5">按维护人排序</option>
+                </select>
+            </div>
+        </div>
+    </div></div>
+    <div class="weui-flex__item"><div class="placeholder"></div></div>
+    <div class="weui-flex__item"><div class="placeholder">
+        <a href="javascript:;" class="weui-btn weui-btn_default open-popup" data-target="#half">筛选</a>
+    </div></div>
+</div>
+
+<a href="javascript:;" id='show-prompt' class="weui-btn weui-btn_primary">显示 Confirm</a>
+<!--内容-->
+<div id="app">
+    <el-collapse accordion>
+        
+        <el-collapse-item>
+            
+             <template slot="title" class="weui-form-preview__label">
+                
+                  <div class="weui-flex">
+                    <div><div class="placeholder"></div>&nbsp;&nbsp;&nbsp;</div>
+                    <div class="weui-flex__item"><div class="placeholder">宁波市盛达工程管理咨询有限公司镇海分公司</div></div>
+                  </div>
+                  
+          </template>
+          <div>
+            <label class="weui-form-preview__label">生物医药产业</label>
+            <!--<span class="weui-form-preview__value">电动打蛋机</span>-->
+        </div>
+        <div>
+            <label class="weui-form-preview__label">浙江省>宁波市</label>
+            <span class="weui-form-preview__value">1000万以下</span>
+        </div>
+        <div>
+            <label class="weui-form-preview__label">维护人:资阳-用户-150</label>
+            <span class="weui-form-preview__value">建档日期:2023-03-20</span>
+        </div>
+        </el-collapse-item>
+      </el-collapse>
+<div v-for="(item,index) in testlist">
+    <template>
+        <div>
+          <el-divider content-position="left">table name {{index}}</el-divider>
+        </div>
+      </template>
+    <div class="weui-form-preview">
+        <div class="weui-form-preview__hd">
+            <div class="weui-form-preview__item">
+                <!-- <label class="weui-form-preview__label">宁波市盛达工程管理咨询有限公司镇海分公司</label> -->
+                <label class="weui-form-preview__label">{{ item.name }}</label>
+                <a class="weui-form-preview__value" id='show-actions'>...</a>
+            </div>
+        </div>
+        <div class="weui-form-preview__bd">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">生物医药产业</label>
+                <!--<span class="weui-form-preview__value">电动打蛋机</span>-->
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">浙江省>宁波市</label>
+                <span class="weui-form-preview__value">1000万以下</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">维护人:资阳-用户-150</label>
+                <span class="weui-form-preview__value">建档日期:2023-03-20</span>
+            </div>
+        </div>
+        <!--<div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
+        </div>-->
+    </div><br>
+</div></div>
+
+<div id="list"></div>
+<div id="half" class='weui-popup__container popup-bottom'>
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+
+        <div class="toolbar">
+            <div class="toolbar-inner">
+                <h1 class="title">筛选条件设置</h1>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="weui-grids">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="name" class="weui-label">行业</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" id="job" type="text" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-grids">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="name" class="weui-label">地区</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" id="dq" type="text" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-grids">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="name" class="weui-label">规模</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" id="gm" type="text" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex">
+                <div class="weui-flex__item"><div class="placeholder"><a href="javascript:;" class="weui-btn weui-btn_default close-popup">重置</a></div></div>
+                <div class="weui-flex__item"><div class="placeholder"><a href="javascript:;" class="weui-btn weui-btn_default close-popup">筛选</a></div></div>
+            </div>
+    </div>
+    </div>
+</div>
+<div class="weui-loadmore">
+    <i class="weui-loading"></i>
+    <span class="weui-loadmore__tips">正在加载</span>
+</div>
+<style>
+    .weui-footer {
+        margin: 25px 0 10px 0;
+    }
+</style>
+
+
+<script src="../lib/jquery-2.1.4.js"></script>
+
+<script src="../js/vue.min.js"></script>
+<!-- 引入组件库 -->
+<script src="../js/elmentui.js"></script>
+
+<script src="../js/test.js"></script>
+<script src="../lib/fastclick.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    $(document).on("click", "#show-actions", function() {
+        $.actions({
+            title: "选择操作",
+            onClose: function() {
+                console.log("close");
+            },
+            actions: [
+                {
+                    text: "发布",
+                    className: "color-primary",
+                    onClick: function() {
+                        $.alert("发布成功");
+                    }
+                },
+                {
+                    text: "编辑",
+                    className: "color-warning",
+                    onClick: function() {
+                        $.alert("你选择了“编辑”");
+                    }
+                },
+                {
+                    text: "删除",
+                    className: 'color-danger',
+                    onClick: function() {
+                        $.alert("你选择了“删除”");
+                    }
+                }
+            ]
+        });
+    });
+
+    $(document).on("click", "#show-actions-bg", function() {
+        $.actions({
+            actions: [
+                {
+                    text: "发布",
+                    className: "bg-primary",
+                },
+                {
+                    text: "编辑",
+                    className: "bg-warning",
+                },
+                {
+                    text: "删除",
+                    className: 'bg-danger',
+                }
+            ]
+        });
+    });
+</script>
+<script src="../js/jquery-weui.js"></script>
+<script>
+    $(document.body).pullToRefresh(function() {
+        setTimeout(function() {
+            $(document.body).pullToRefreshDone();
+        }, 2000);
+    });
+</script>
+<script>
+    var loading = false;
+    $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+        setTimeout(function() {
+            $("#list").append("<p>《世界著名计算机教材精选·人工智能:一种现代的方法(第3版)》英文版有1100多页，教学内容非常丰富，不但涵盖了人工智能基础、问题求解、知识推理与规划等经典内容，而且还包括不确定知识与推理、机器学习、通讯感知与行动等专门知识的介绍。目前我们为本科生开设的学科基础必修课“人工智能导论”主要介绍其中的经典内容，而研究生必修的核心课程“人工智能原理”主要关注其中的专门知识。其实《世界著名计算机教材精选·人工智能:一种现代的方法(第3版)》也适合希望提高自身计算系统设计水平的广大应用计算技术的社会公众，对参加信息学奥林匹克竞赛和ACM程序设计竞赛的选手及其教练员也有一定的参考作用。</p>");
+            loading = false;
+        }, 2000);
+    });
+</script>
+<script>
+    $(document).on("open", ".weui-popup-modal", function() {
+        console.log("open popup");
+    }).on("close", ".weui-popup-modal", function() {
+        console.log("close popup");
+    });
+</script>
+    <script>
+        $("#job").select({
+            title: "选择职业",
+            items: ["法官", "医生", "猎人", "学生", "记者", "其他"],
+            onChange: function(d) {
+                console.log(this, d);
+            },
+            onClose: function() {
+                console.log("close");
+            },
+            onOpen: function() {
+                console.log("open");
+            },
+        });
+        $("#dq").select({
+            title: "选择职业",
+            items: ["法官", "医生", "猎人", "学生", "记者", "其他"],
+            onChange: function(d) {
+                console.log(this, d);
+            },
+            onClose: function() {
+                console.log("close");
+            },
+            onOpen: function() {
+                console.log("open");
+            },
+        });
+        $("#gm").select({
+            title: "选择职业",
+            items: ["法官", "医生", "猎人", "学生", "记者", "其他"],
+            onChange: function(d) {
+                console.log(this, d);
+            },
+            onClose: function() {
+                console.log("close");
+            },
+            onOpen: function() {
+                console.log("open");
+            },
+        });
+        //非实时
+        $("form").submit(function(){
+        var keyword = $("#searchInput").val();
+
+        alert(keyword);
+        })
+        //实时搜索
+        // $('#searchInput').bind('input propertychange', function() {
+                
+        //         var text = $("#searchInput").val();
+        //         var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+        //         if (reg.test(text)) {
+        //             $('.weui-cell').each(function () {
+        //                 var $self = $(this);
+        //                 var flag = $self.text().search(text)
+        //                 if (flag > -1) {
+        //                     $self.css("display", "");
+
+        //                 } else {
+        //                     $self.css("display", "none");
+
+        //                 }
+        //             });
+        //         }
+        //         alert(text);
+        //     });
+
+        function cancel(){
+        
+        $('.weui-cell').css("display","")
+
+        }
+
+        function clear(){
+        
+            $('#searchInput').val('')
+            $('.weui-cell').css("display", "")
+        }
+
+        $(document).on("click", "#show-prompt", function() {
+            $.prompt({
+                text: "名字不能超过6个字符，不得出现不和谐文字",
+                title: "输入姓名",
+                onOK: function(text) {
+                    $.alert("您的名字是:"+text, "角色设定成功");
+                },
+                onCancel: function() {
+                    console.log("取消了");
+                },
+                input: 'Mr Noone'
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

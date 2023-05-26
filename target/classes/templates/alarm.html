@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>预警页面</title>
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="/vue/element-ui.min.css">-->
+    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">
+</head>
+<style>
+    /*标题背景色*/
+    .dialog .el-dialog__header  {
+        background-color: #f44b4b;
+    }
+    /*body背景色*/
+    .dialog .el-dialog__body  {
+        background-color: #f44b4b;
+    }
+    .dialog .el-dialog__footer{
+        background-color: #f44b4b;
+
+    }
+    .dialog .v-modal{background: #f44b4b;}
+    .el-loading-spinner {
+        background-image: url('/vide/jb2.gif');/*设置自己想要的图片或gif*/
+        background-repeat: no-repeat;
+        background-size: 900px 400px;
+        height: 400px;
+        width: 100%;
+        background-position: center;
+        top: 30%;
+    }
+
+    .el-loading-spinner .circular {/*隐藏 默认的 loading 动画*/
+        display: none;
+    }
+
+    .el-loading-spinner .el-loading-text {
+        /*作为扩充，这个是用来设置文字的位置的，本人没用到文字，就没设置，如有需要，自行设置……*/
+        color: #f0e626;
+        font-size: 40px;
+        top: 20%;
+    }
+
+</style>
+<style>
+    .el-row {
+        margin-bottom: 20px;
+    &:last-child {
+         margin-bottom: 0;
+     }
+    }
+    .el-col {
+        border-radius: 4px;
+    }
+    .bg-purple-dark {
+        background: #99a9bf;
+    }
+    .bg-purple {
+        background: #d3dce6;
+    }
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+</style>
+<body style="background-color: #5FB878">
+<br><br><br>
+<!--html代码 -->
+<div id="app">
+    <el-row :gutter="20" style="text-align: center">
+        <el-col :span="6"><div class="grid-content bg-purple" style="height: 200px;"><br><br><i class="el-icon-message-solid" style="color: #bd2c00;"></i>房间1 <br>联系人：xxxx<br> 联系电话：188xxxx888</div></el-col>
+        <el-col :span="6" :offset="6"><div class="grid-content bg-purple" style="height: 150px;"><br><i class="el-icon-message-solid" style="color: #bd2c00"></i>房间2<br>联系人：xxxx<br> 联系电话：188xxxx888</div></el-col>
+    </el-row>
+    <el-row :gutter="20" style="text-align: center">
+        <el-col :span="6" :offset="6"><div class="grid-content bg-purple" style="height: 150px;"><br><i class="el-icon-message-solid" style="color: #bd2c00"></i>房间3<br>联系人：xxxx<br> 联系电话：188xxxx888</div></el-col>
+        <el-col :span="6" :offset="6"><div class="grid-content bg-purple" style="height: 150px;"><br><i class="el-icon-message-solid" style="color: #bd2c00"></i>房间4<br>联系人：xxxx<br> 联系电话：188xxxx888</div></el-col>
+    </el-row>
+    <el-row :gutter="20" style="text-align: center">
+        <el-col :span="12" :offset="6"><div class="grid-content bg-purple" style="height: 150px;"><br><i class="el-icon-message-solid" style="color: #bd2c00"></i>仓库<br>联系人：xxxx<br> 联系电话：188xxxx888</div></el-col>
+    </el-row>
+    <!--预警-->
+    <template>
+        <div style="text-align: center;">
+            <el-row>
+                <el-button type="danger" @click="openFullScreen2">测试警报</el-button>
+                <!-- <embed src="../vide/misc.mp3" hidden="true" autostart="true" loop="-1"/> -->
+                <audio ref="audioTip" style="display:none;" >
+                    <source src="../vide/misc.mp3">
+                </audio>
+            </el-row>
+        </div>
+    </template>
+
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<!--icont图标引用-->
+<link rel="stylesheet" href="/icont/iconfont.css">
+<script src="/icont/iconfont.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                centerDialogVisible: false,
+                tests: ''
+            };
+        },
+        //初始化
+        mounted: function () {
+            this.tests = '[[${text}]]';
+        },
+        //被调用方法
+        methods: {
+            openFullScreen2() {
+                //播放
+                this.$refs.audioTip.play();
+                //如果不能播放，尝试在该句前面加上,百度得来，感觉没什么用
+                // this.$refs.audioTip.load();
+
+                // this.centerDialogVisible = true;
+                const loading = this.$loading({
+                    lock: true,
+                    text: this.tests, //对文字的设置
+                    // spinner: '',可以用官网给的图标类名
+                    background: 'rgba(252, 41, 15, 0.7)'
+                });
+                setTimeout(() => {
+                    loading.close();
+                }, 600);
+                setTimeout(() => {
+                    this.openFullScreen2();
+                }, 800);
+            }
+        }
+    })
+</script>
+</html>
