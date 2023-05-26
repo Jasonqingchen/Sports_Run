@@ -17,9 +17,9 @@
   <body ontouchstart>
 
   <br><br><br>
-  <div class="swiper-wrapper">
+  <div class="swiper-wrapper" style="text-align: center">
     <!-- Slides -->
-    <div class="swiper-slide"><img src="../demos/images/kun.jpg" /></div>
+    <div class="swiper-slide" style="text-align: center"><img src="../demos/images/kun.jpg" /></div>
     <!--<div class="swiper-slide"><img src="images/swiper-2.jpg" /></div>
     <div class="swiper-slide"><img src="images/swiper-3.jpg" /></div>-->
   </div>
@@ -35,7 +35,7 @@
   <br>
   <div class="weui-flex">
     <div class="weui-flex__item"><div class="placeholder">
-      <a class="weui-btn weui-btn_plain-default"  id="search" >开始查询</a>
+      <a class="weui-btn weui-btn_plain-primary"  id="search" >开始查询</a>
     </div></div>
     <div class="weui-flex__item"><div class="placeholder">
       <a href="login.html" class="weui-btn weui-btn_plain-default">返回登陆页</a>
@@ -83,7 +83,7 @@
     var d = {
       'sfzhm': sfzhm
     };
-    var url = 'http://localhost:8666/tb/search';
+    var url = 'http://1.12.238.58:8666/tb/search';
     $.ajax({
       type: 'POST',
       url: url,
