@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>首页</title>
+    <title>选手查询</title>
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -103,17 +103,17 @@
          var gj =  result[0].gj;
          var yfcm =  result[0].yfcm;
          var email =  result[0].email;
-         var tests ="<br><br>姓名:"+name
+         var tests ="<br><br>微信名:"+wxm
+                 +"<br><br>姓名:"+name
+                 +"<br><br>国籍:"+gj
                  +"<br><br>身份证号:"+sfzhm
                  +"<br><br>电话:"+phone
                  +"<br><br>性别:"+sex
                  +"<br><br>组别:"+zb
                  +"<br><br>紧急联系人:"+jjlxr
                  +"<br><br>紧急联系人电话:"+jjlxrdh
-                 +"<br><br>微信名:"+wxm
-                 +"<br><br>国籍:"+gj
-                 +"<br><br>姓名:"+email
                  +"<br><br>衣服尺码:"+yfcm
+                 +"<br><br>邮箱:"+email
                  +"<br><br>住址:"+zz;
          $.noti({
            title: "状态： 报名成功",
