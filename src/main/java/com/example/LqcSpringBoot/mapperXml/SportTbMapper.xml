@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.LqcSpringBoot.mapper.SportTbMapper" >
+  <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.SportTb" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="jjlxr" property="jjlxr" jdbcType="VARCHAR" />
+    <result column="jjlxrdh" property="jjlxrdh" jdbcType="VARCHAR" />
+    <result column="zb" property="zb" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="wxm" property="wxm" jdbcType="VARCHAR" />
+    <result column="sfzhm" property="sfzhm" jdbcType="VARCHAR" />
+    <result column="gj" property="gj" jdbcType="VARCHAR" />
+    <result column="yfcm" property="yfcm" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="zz" property="zz" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.example.LqcSpringBoot.model.SportTb" >
+    insert into sport_tb (id, name, phone, 
+      jjlxr, jjlxrdh, zb, 
+      sex, wxm, sfzhm, gj, 
+      yfcm, email, zz)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{jjlxr,jdbcType=VARCHAR}, #{jjlxrdh,jdbcType=VARCHAR}, #{zb,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{wxm,jdbcType=VARCHAR}, #{sfzhm,jdbcType=VARCHAR}, #{gj,jdbcType=VARCHAR}, 
+      #{yfcm,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{zz,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, phone, jjlxr, jjlxrdh, zb, sex, wxm, sfzhm, gj, yfcm, email, zz
+    from sport_tb
+  </select>
+  <!--search user by sfzhm-->
+  <select id="selectBySfzhm" resultMap="BaseResultMap">
+    select * from sport_tb where sfzhm = #{sfzhm}
+  </select>
+</mapper>

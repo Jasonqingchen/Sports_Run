@@ -52,7 +52,7 @@
         </javaClientGenerator> -->
 
         <!-- table是用户指定的被生成相关信息的表，它必须在指定的jdbc连接中已经被建立。?是否可以多个 -->
-        <table tableName="sport_km" enableCountByExample="true" enableUpdateByExample="true"
+        <table tableName="sport_tb" enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"></table>
 
     </context>
