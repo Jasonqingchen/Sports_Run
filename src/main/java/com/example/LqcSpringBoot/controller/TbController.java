@@ -52,4 +52,16 @@ public class TbController {
             return new ArrayList<>();
         }
     }
+
+    /**
+     * 赛事查询
+     * @param
+     * @return
+     */
+    @RequestMapping("/selectbysport")
+    @ResponseBody
+    public String selectbysport() {
+        return "";
+    }
+
 }

@@ -33,6 +33,8 @@ public class SportTb implements Serializable {
 
     private String zz;
 
+    private String sportname;
+
     private static final long serialVersionUID = 1L;
 
 }
