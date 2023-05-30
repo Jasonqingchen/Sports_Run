@@ -14,4 +14,5 @@ import java.util.List;
 @Mapper
 public interface SportTbMapper extends BaseMapper<SportTb> {
     List<SportTb> selectBySfzhm(String sfzhm);// search user by sfzhm
+    List<SportTb> selecNameLike(String name);//search user by name and like select
 }

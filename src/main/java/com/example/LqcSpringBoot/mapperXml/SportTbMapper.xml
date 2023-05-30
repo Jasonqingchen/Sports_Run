@@ -35,4 +35,10 @@
   <select id="selectBySfzhm" resultMap="BaseResultMap">
     select * from sport_tb where sfzhm = #{sfzhm}
   </select>
+
+  <!--search user by name and like select-->
+  <select id="selecNameLike" resultMap="BaseResultMap">
+    select * from sport_tb st WHERE  st.name like concat('%',#{name},'%')
+  </select>
+
 </mapper>

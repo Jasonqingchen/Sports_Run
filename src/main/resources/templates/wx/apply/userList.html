@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户列表</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <link rel="stylesheet" href="../lib/weui.min.css">
+    <link rel="stylesheet" href="../css/jquery-weui.css">
+
+</head>
+<body ontouchstart style="text-align: center">
+<div class="weui-search-bar" id="searchBar">
+    <form class="weui-search-bar__form" action="#">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+        </div>
+        <label class="weui-search-bar__label" id="searchText"
+               style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+            <i class="weui-icon-search"></i>
+            <span>搜索 选手名字</span>
+        </label>
+    </form>
+    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+</div>
+
+<div id="app">
+<div class="swiper-wrapper" style="text-align: center">
+    <!-- Slides -->
+    <div class="swiper-slide" style="text-align: center"><img src="../demos/images/kun.jpg"/></div>
+    <!--<div class="swiper-slide"><img src="images/swiper-2.jpg" /></div>
+    <div class="swiper-slide"><img src="images/swiper-3.jpg" /></div>-->
+</div>
+<br>
+<div v-for="(item,index) in userList">
+    <div class="weui-form-preview">
+        <div class="weui-form-preview__hd">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">{{item.name}}</label>
+                <em class="weui-form-preview__value" style="color: #8D8D8D; font-size: 17px;">{{item.sex}}</em>
+            </div>
+        </div>
+        <div class="weui-form-preview__bd">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">{{item.wxm}}</label>
+                <span class="weui-form-preview__value">{{item.zb}}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">{{item.gj}}</label>
+                <span class="weui-form-preview__value">{{item.sfzhm}}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">{{item.email}}</label>
+                <span class="weui-form-preview__value">{{item.phone}}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">衣服尺码</label>
+                <span class="weui-form-preview__value">{{item.yfcm}}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">紧急联系人</label>
+                <span class="weui-form-preview__value">{{item.jjlxr}}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">紧急联系人电话</label>
+                <span class="weui-form-preview__value">{{item.jjlxrdh}}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">住址</label>
+                <span class="weui-form-preview__value">{{item.zz}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script src="../lib/jquery-2.1.4.js"></script>
+
+<script src="../lib/fastclick.js"></script>
+<script src="../js/vue.min.js"></script><!-- 引入组件库 -->
+<script src="../js/elmentui.js"></script>
+
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+    //实时搜索
+    // $("form").submit(function(){
+    //     var keyword = $("#searchInput").val();
+    //     alert(keyword);
+    // })
+
+
+</script>
+<script src="../js/jquery-weui.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+    new Vue({
+        el: '#app',
+        data: function() {
+            return { userList:[] }
+        },
+
+        //初始化
+        mounted: function () {
+
+            let newthis = this;
+            $("#searchClear").click(function() {
+                var url = 'http://localhost:8666/tb/selectUser';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.length==0) {
+                            newthis.userList=[];
+                        } else {
+                            for (let i = 0; i < result.length; i++) {
+                                newthis.userList.push(result[i]);
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            });
+                    $("#searchCancel").click(function() {
+                var url = 'http://localhost:8666/tb/selectUser';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.length==0) {
+                            newthis.userList=[];
+                        } else {
+                            for (let i = 0; i < result.length; i++) {
+                                newthis.userList.push(result[i]);
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            });
+            $('#searchInput').bind('input propertychange', function() {
+                var text = $("#searchInput").val();
+                var url = 'http://localhost:8666/tb/selectUser';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {name:text},
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.length==0) {
+                            newthis.userList=[];
+                        } else {
+                            for (let i = 0; i < result.length; i++) {
+                                newthis.userList.push(result[i]);
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            });
+            var url = 'http://localhost:8666/tb/selectUser';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                // data: d,
+                dataType: 'json',
+                success: function (result) {
+                    for (let i = 0; i < result.length; i++) {
+                        newthis.userList.push(result[i]);
+                    }
+
+                },
+                error: function () {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+
+        //被调用方法
+        methods:{
+
+        }
+
+    })
+</script>
+</body>
+</html>
