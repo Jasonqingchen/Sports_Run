@@ -42,7 +42,10 @@
         <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">{{item.name}}</label>
-                <em class="weui-form-preview__value" style="color: #8D8D8D; font-size: 17px;">{{item.sex}}</em>
+                <em class="weui-form-preview__value" style="color: #8D8D8D; font-size: 17px;">
+                    <span v-if="item.sex=='男'"><span style="color: #1E9FFF">{{item.sex}}</span></span>
+                    <span v-if="item.sex=='女'"><span style="color: #bd2c00">{{item.sex}}</span></span>
+                </em>
             </div>
         </div>
         <div class="weui-form-preview__bd">
@@ -114,12 +117,13 @@
 
             let newthis = this;
             $("#searchClear").click(function() {
-                var url = 'http://localhost:8666/tb/selectUser';
+                var url = 'http://1.12.238.58:8666/tb/selectUser';
                 $.ajax({
                     type: 'POST',
                     url: url,
                     dataType: 'json',
                     success: function (result) {
+                        newthis.userList=[];
                         if (result.length==0) {
                             newthis.userList=[];
                         } else {
@@ -136,12 +140,13 @@
                 });
             });
                     $("#searchCancel").click(function() {
-                var url = 'http://localhost:8666/tb/selectUser';
+                var url = 'http://1.12.238.58:8666/tb/selectUser';
                 $.ajax({
                     type: 'POST',
                     url: url,
                     dataType: 'json',
                     success: function (result) {
+                        newthis.userList=[];
                         if (result.length==0) {
                             newthis.userList=[];
                         } else {
@@ -157,37 +162,67 @@
                     }
                 });
             });
-            $('#searchInput').bind('input propertychange', function() {
-                var text = $("#searchInput").val();
-                var url = 'http://localhost:8666/tb/selectUser';
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {name:text},
-                    dataType: 'json',
-                    success: function (result) {
-                        if (result.length==0) {
+            // $('#searchInput').bind('input propertychange', function() {
+            //     var text = $("#searchInput").val();
+            //     var url = 'http://1.12.238.58:8666/tb/selectUser';
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: url,
+            //         data: {name:text},
+            //         dataType: 'json',
+            //         success: function (result) {
+            //             newthis.userList=[];
+            //
+            //             if (result.length==0) {
+            //                 newthis.userList=[];
+            //             } else {
+            //                 for (let i = 0; i < result.length; i++) {
+            //                     newthis.userList.push(result[i]);
+            //                 }
+            //             }
+            //
+            //         },
+            //         error: function () {
+            //             console.log('error submit!!');
+            //             return false;
+            //         }
+            //     });
+            // });
+            $("form").submit(function(){
+                var keyword = $("#searchInput").val();
+                var url = 'http://1.12.238.58:8666/tb/selectUser';
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {name:keyword},
+                        dataType: 'json',
+                        success: function (result) {
                             newthis.userList=[];
-                        } else {
-                            for (let i = 0; i < result.length; i++) {
-                                newthis.userList.push(result[i]);
-                            }
-                        }
 
-                    },
-                    error: function () {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            });
-            var url = 'http://localhost:8666/tb/selectUser';
+                            if (result.length==0) {
+                                newthis.userList=[];
+                            } else {
+                                for (let i = 0; i < result.length; i++) {
+                                    newthis.userList.push(result[i]);
+                                }
+                            }
+
+                        },
+                        error: function () {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+            })
+            var url = 'http://1.12.238.58:8666/tb/selectUser';
             $.ajax({
                 type: 'POST',
                 url: url,
                 // data: d,
                 dataType: 'json',
                 success: function (result) {
+                    debugger
+                    newthis.userList=[];
                     for (let i = 0; i < result.length; i++) {
                         newthis.userList.push(result[i]);
                     }
