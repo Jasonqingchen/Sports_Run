@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AI助手</title>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" href="../lib/weui.min.css">
+<link rel="stylesheet" href="../css/jquery-weui.css">
+
+  </head>
+
+  <body ontouchstart>
+
+  <br><br><br>
+  <div class="swiper-wrapper" style="text-align: center">
+    <!-- Slides -->
+<!--    <div class="swiper-slide" style="text-align: center"><img src="../demos/images/kun.jpg" /></div>-->
+    <!--<div class="swiper-slide"><img src="images/swiper-2.jpg" /></div>
+    <div class="swiper-slide"><img src="images/swiper-3.jpg" /></div>-->
+  </div>
+<br><br><br>
+  <div class="weui-cells weui-cells_form">
+    <div class="weui-cells__title">问点啥呢？</div>
+    <div class="weui-cells weui-cells_form">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入文本" rows="3" id="texts"></textarea>
+          <div class="weui-textarea-counter"><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="weui-flex">
+    <div class="weui-flex__item"><div class="placeholder">
+      <a class="weui-btn weui-btn_plain-primary"  id="search" >解答</a>
+    </div></div>
+  </div>
+
+  <!--弹出曾-->
+  <div id="half" class='weui-popup__container popup-bottom'>
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <a href="javascript:;" class="picker-button close-popup">关闭</a>
+          <h1 class="title">标题</h1>
+        </div>
+      </div>
+      <div class="modal-content">
+        <div class="weui-grids">
+          123312
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <script src="../lib/jquery-2.1.4.js"></script>
+<script src="../lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="../js/jquery-weui.js"></script>
+  <script>
+    $(document).on("open", ".weui-popup-modal", function() {
+      console.log("open popup");
+    }).on("close", ".weui-popup-modal", function() {
+      console.log("close popup");
+    });
+  </script>
+<script>
+  /*搜索*/
+  $("#search").click(function() {
+    var texts = $("#texts").val();
+    var d = {
+      'texts': texts
+    };
+    var url = 'http://1.12.238.58:8666/tb/openai';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: d,
+      dataType: 'json',
+      success: function (result) {
+       if (result.length>0){
+         var tests ="<br><br>结果:"+result
+         $.noti({
+           title: "状态： 结果",
+           text: tests,
+           media: "<img src='../demos/images/icon_nav_msg.png' />",
+           time: 10000,
+           onClick: function(data) {
+             $.alert(data.message);
+           }
+         });
+       } else {
+         $.toptip('无信息');
+       }
+      },
+      error: function () {
+        console.log('error submit!!');
+        return false;
+      }
+    });
+
+  });
+</script>
+  </body>
+</html>

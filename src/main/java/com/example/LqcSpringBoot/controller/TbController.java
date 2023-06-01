@@ -1,7 +1,12 @@
 package com.example.LqcSpringBoot.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.LqcSpringBoot.mapper.SportTbMapper;
 import com.example.LqcSpringBoot.model.SportTb;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 团报
@@ -75,13 +77,45 @@ public class TbController {
     @RequestMapping("/selectUser")
     @ResponseBody
     public List<SportTb> selectUser(SportTb sportTb) {
-        List<SportTb>  SportTb;
-        if (sportTb.getName()==null || sportTb.getName()==""){
+        List<SportTb> SportTb;
+        if (sportTb.getName() == null || sportTb.getName() == "") {
             SportTb = stm.selectList(null);
         } else {
             SportTb = stm.selecNameLike(sportTb.getName());
         }
         return SportTb;
+    }
+
+    /**
+     * openai接口
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("/openai")
+    @ResponseBody
+    public String selectUser(String texts) {
+        if (texts==null || texts ==""){
+            return "未输入内容";
+        }
+        Unirest.setTimeouts(0, 0);
+        try {
+            HttpResponse<String> response = Unirest.post("https://api.openai.com/v1/completions")
+                    .header("Authorization", "Bearer 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")
+                    .header("Content-Type", "application/json")
+                    .body("{\n    \"model\": \"text-davinci-003\",\n    \"prompt\":\"" +
+                            texts+
+                            "\",\n    \"max_tokens\": 1025,\n    \"temperature\": 0\n}")
+                    .asString();
+            HashMap hashMap = JSON.parseObject(response.getBody(), HashMap.class);
+            List<Object> choices = (List<Object>) hashMap.get("choices");
+            String text = (String) ((JSONObject) choices.get(0)).get("text");
+            return text;
+
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 
