@@ -11,7 +11,7 @@
  Target Server Version : 50562 (5.5.62-log)
  File Encoding         : 65001
 
- Date: 26/05/2023 15:53:36
+ Date: 09/06/2023 09:40:29
 */
 
 SET NAMES utf8mb4;
@@ -22,19 +22,20 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sport_tb`;
 CREATE TABLE `sport_tb` (
-  `id` varchar(255) DEFAULT NULL,
+  `wxm` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `zb` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
+  `gj` varchar(255) DEFAULT NULL,
+  `sfzhm` varchar(255) DEFAULT NULL,
   `jjlxr` varchar(255) DEFAULT NULL,
   `jjlxrdh` varchar(255) DEFAULT NULL,
-  `zb` varchar(255) DEFAULT NULL,
-  `sex` varchar(255) DEFAULT NULL,
-  `wxm` varchar(255) DEFAULT NULL,
-  `sfzhm` varchar(255) DEFAULT NULL,
-  `gj` varchar(255) DEFAULT NULL,
   `yfcm` varchar(255) DEFAULT NULL,
+  `zz` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `zz` varchar(255) DEFAULT NULL
+  `id` varchar(255) DEFAULT NULL,
+  `sportname` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
