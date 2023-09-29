@@ -28,11 +28,6 @@
     select *
     from sport_user order by min
   </select>
-  <!--对手机号进行查重-->
-  <select id="selectByPhone" resultMap="BaseResultMap">
-    select *
-    from sport_user where phone = #{phone}
-  </select>
   <!--所有选手进行排序-->
   <select id="selectByMap" resultMap="BaseResultMap">
     SELECT u.*,
