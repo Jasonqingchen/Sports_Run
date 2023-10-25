@@ -16,13 +16,13 @@
 <!--    <link rel="stylesheet" th:href="@{https://unpkg.com/element-ui/lib/theme-chalk/index.css}">-->
 </head>
 <style type="text/css">
-                   //图标样式
+                /*图标样式*/
                 .addDelete {
                   position: absolute;
                   top: 10px;
                   right: -25px;
                   display: flex;
-                  flex-direction: column;
+                  flex-direction: column;}
                   i {
                     font-size: 18px;
                     flex: 1;
@@ -33,7 +33,7 @@
                   .el-icon-remove-outline {
                     color: red;
                   }
-                }
+
                 .d{
                 background:url("/imgs/d.jpg")
                 }
@@ -357,13 +357,18 @@
     <!--  生成二维码的dialog弹出框-->
     <el-dialog title="二维码" :visible.sync="dialogFormEwm">
         <div slot="footer" class="dialog-footer" style="text-align:center;">
-            <div id="locatorQRCodeRef" style="width: 200px; height：200px; display:none;margin: 0 auto;">
+            <div id="locatorQRCodeRef" style="width: 200px; height: 200px; display:none;margin: 0 auto;">
             </div><br>
             <span id="ename"></span><br><br><br>
             <el-button @click="dialogFormEwm = false">取 消</el-button>
         </div>
     </el-dialog>
+    <br><br><br>
+    <el-link type="info" disabled><strong style="color: #FFFFFF" >文静的滑降绳</strong></el-link>
+    <br><br>
+    <el-link type="info" disabled><strong style="color: #FFFFFF" >www.baidu.com</strong></el-link>
 </div>
+
 </body>
 <script src="/vue/jquery.min.js"></script>
 <script src="/vue/vue.min.js"></script>
@@ -773,7 +778,7 @@ handleClose(done) {
 			});
           loading.close();
     <!--let qrcodeCanvas = ((this.$refs.locatorQRCodeRef || {})?.getElementsByTagName?.('canvas') || [])?.[0];-->
-    <!--//this.qrcodeImgUrl = qrcodeCanvas?.toDataURL?.('image/png'); 作为下载图片资源-->
+     <!--this.qrcodeImgUrl = qrcodeCanvas?.toDataURL?.('image/png'); 作为下载图片资源-->
     <!--   rows.splice(index, 1);-->
       },
     //保存
